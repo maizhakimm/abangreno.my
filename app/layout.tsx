@@ -7,32 +7,32 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://abangreno.my"),
-  title: "Abang Reno | Waterproofing, Painting & Home Repair Services Klang Valley",
+  title: "Abang Reno — Waterproofing, Baiki Dinding Retak, Painting di Klang Valley",
   description:
-    "Professional waterproofing, wall crack repair, painting, epoxy coating, mirror installation and minor renovation services throughout Klang Valley. Request a quotation through WhatsApp today.",
+    "Abang Reno menyediakan servis waterproofing, baiki dinding retak, painting, epoxy coating dan pemasangan cermin sekitar Klang Valley dengan quotation yang jelas sebelum kerja bermula.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Abang Reno | Waterproofing, Painting & Home Repair Services Klang Valley",
+    title: "Abang Reno — Waterproofing & Servis Rumah di Klang Valley",
     description:
-      "Professional waterproofing, wall crack repair, painting, epoxy coating, mirror installation and minor renovation services throughout Klang Valley.",
+      "Abang Reno menyediakan servis waterproofing, baiki dinding retak, painting, epoxy coating dan pemasangan cermin sekitar Klang Valley.",
     url: "https://abangreno.my",
     siteName: "Abang Reno",
     images: [{ url: "/team-van.svg", width: 1200, height: 820, alt: "Abang Reno local team with branded service van" }],
-    locale: "en_MY",
+    locale: "ms_MY",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Abang Reno | Waterproofing, Painting & Home Repair Services Klang Valley",
+    title: "Abang Reno — Waterproofing & Servis Rumah di Klang Valley",
     description:
-      "Waterproofing, painting, home repair and minor renovation services throughout Klang Valley.",
+      "Abang Reno menyediakan servis waterproofing, baiki dinding retak, painting, epoxy coating dan pemasangan cermin sekitar Klang Valley.",
     images: ["/team-van.svg"],
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-MY">
+    <html lang="ms-MY">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
     </html>
   );

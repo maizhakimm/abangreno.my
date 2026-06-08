@@ -63,3 +63,22 @@ a {
     scroll-behavior: auto;
   }
 }
+
+/* Added styles for redesigned landing page */
+.service-card img,
+.service-card .next-image {
+  display: block;
+  object-fit: cover;
+}
+
+.before-after-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .service-card .p-6 {
+    min-height: 170px;
+  }
+}
