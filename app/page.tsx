@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 
 const whatsappLink =
   "https://wa.me/601151317030?text=Hi%20Abang%20Reno!%0A%0AService%20Required:%20__________%0ALocation:%20__________%0APlease%20provide%20a%20quotation.%20Thank%20you.";
@@ -50,7 +51,7 @@ const faqs = [
   ["Can I pay using BNPL?", "BNPL may be available through selected payment partners, subject to approval."],
 ];
 
-function CtaButton({ children, variant = "primary" }: { children: React.ReactNode; variant?: "primary" | "dark" | "light" }) {
+function CtaButton({ children, variant = "primary" }: { children: ReactNode; variant?: "primary" | "dark" | "light" }) {
   const variants = {
     primary: "bg-orange-600 text-white shadow-lg shadow-orange-600/25 hover:bg-orange-700",
     dark: "bg-neutral-950 text-white shadow-lg shadow-neutral-950/20 hover:bg-neutral-800",
@@ -97,11 +98,11 @@ function PlaceholderImage({ title, detail, index }: { title: string; detail: str
       <div className="relative min-h-56 overflow-hidden bg-neutral-950 p-5">
         <div className={`absolute inset-0 ${index % 2 ? "bg-orange-600" : "bg-neutral-950"}`} />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_15%,rgba(255,255,255,.36),transparent_26%),linear-gradient(135deg,rgba(255,90,0,.88),rgba(8,11,16,.82))]" />
-        <div className="relative flex h-48 flex-col justify-between rounded-[1.5rem] border border-white/18 bg-white/10 p-5 text-white backdrop-blur-sm transition group-hover:scale-[1.02]">
+        <div className="relative flex h-48 flex-col justify-between rounded-[1.5rem] border border-white/[0.18] bg-white/10 p-5 text-white backdrop-blur-sm transition group-hover:scale-[1.02]">
           <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-2xl text-orange-600">{["💧", "🧱", "🎨", "✨", "🪞", "🛠️"][index]}</span>
           <div>
             <p className="text-xl font-black">{title}</p>
-            <p className="mt-2 text-sm leading-6 text-white/78">{detail}</p>
+            <p className="mt-2 text-sm leading-6 text-white/[0.78]">{detail}</p>
           </div>
         </div>
       </div>
@@ -278,9 +279,9 @@ export default function Home() {
       <section id="contact" className="section-shell py-16 sm:py-24">
         <div className="orange-gradient overflow-hidden rounded-[2.75rem] p-8 text-white shadow-2xl sm:p-12 lg:p-16">
           <div className="max-w-2xl">
-            <p className="mb-3 text-sm font-black uppercase tracking-[0.24em] text-white/72">Ready to start?</p>
+            <p className="mb-3 text-sm font-black uppercase tracking-[0.24em] text-white/[0.72]">Ready to start?</p>
             <h2 className="text-3xl font-black tracking-tight sm:text-5xl">Need Repair or Renovation Work?</h2>
-            <p className="mt-5 text-lg leading-8 text-white/82">Send us your issue, location and photos through WhatsApp. Our team will assist you with the next step.</p>
+            <p className="mt-5 text-lg leading-8 text-white/[0.82]">Send us your issue, location and photos through WhatsApp. Our team will assist you with the next step.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <CtaButton variant="light">Request Quotation</CtaButton>
               <CtaButton variant="dark">WhatsApp Now</CtaButton>
