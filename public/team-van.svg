@@ -1,0 +1,65 @@
+<svg width="1200" height="820" viewBox="0 0 1200 820" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Abang Reno local repair team with branded service van</title>
+  <desc id="desc">Five workers in orange uniforms and caps standing beside an orange and black Abang Reno contractor service van.</desc>
+  <rect width="1200" height="820" rx="64" fill="#fff7ed"/>
+  <circle cx="1060" cy="150" r="180" fill="#ffedd5"/>
+  <circle cx="170" cy="680" r="220" fill="#ffe2c5"/>
+  <path d="M110 638h980" stroke="#111827" stroke-width="18" stroke-linecap="round" opacity=".12"/>
+  <g filter="url(#shadow)">
+    <path d="M414 319h430c77 0 139 62 139 139v126H336V397c0-43 35-78 78-78Z" fill="#111827"/>
+    <path d="M386 377h224l-45-82H448c-38 0-62 32-62 82Z" fill="#ff5a00"/>
+    <path d="M623 377h251l-60-82H579l44 82Z" fill="#fff"/>
+    <path d="M377 405h606v166H377V405Z" fill="#ff5a00"/>
+    <path d="M645 430h204c34 0 62 28 62 62v79H645V430Z" fill="#fff" opacity=".94"/>
+    <path d="M430 435h167v136H430V435Z" fill="#0b1220" opacity=".9"/>
+    <text x="778" y="506" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="48" font-weight="900" fill="#111827">ABANG</text>
+    <text x="778" y="553" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="58" font-weight="900" fill="#ff5a00" stroke="#111827" stroke-width="3">RENO</text>
+    <circle cx="487" cy="584" r="58" fill="#111827" stroke="#fff" stroke-width="16"/>
+    <circle cx="487" cy="584" r="22" fill="#ff5a00"/>
+    <circle cx="880" cy="584" r="58" fill="#111827" stroke="#fff" stroke-width="16"/>
+    <circle cx="880" cy="584" r="22" fill="#ff5a00"/>
+  </g>
+  <g filter="url(#shadow)">
+    <g transform="translate(136 247)">
+      <ellipse cx="63" cy="364" rx="54" ry="14" fill="#111827" opacity=".12"/>
+      <circle cx="64" cy="58" r="38" fill="#f6a464"/>
+      <path d="M25 48c9-30 34-47 70-31 16 7 24 21 26 39-26-12-59-14-96-8Z" fill="#111827"/>
+      <path d="M22 47c31-17 65-17 101 1l-8-31C78 2 48 4 29 22l-7 25Z" fill="#ff5a00" stroke="#111827" stroke-width="5"/>
+      <rect x="25" y="102" width="78" height="159" rx="25" fill="#ff5a00"/>
+      <path d="M25 127h78v31H25z" fill="#111827" opacity=".88"/>
+      <path d="M35 260h23v98H35zM74 260h23v98H74z" fill="#111827"/>
+      <path d="M23 126-1 218M105 126l24 92" stroke="#f6a464" stroke-width="17" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(242 215)">
+      <ellipse cx="63" cy="396" rx="55" ry="14" fill="#111827" opacity=".12"/>
+      <circle cx="64" cy="58" r="38" fill="#f6a464"/>
+      <path d="M25 48c9-30 34-47 70-31 16 7 24 21 26 39-26-12-59-14-96-8Z" fill="#111827"/>
+      <path d="M22 47c31-17 65-17 101 1l-8-31C78 2 48 4 29 22l-7 25Z" fill="#ff5a00" stroke="#111827" stroke-width="5"/>
+      <rect x="23" y="102" width="82" height="183" rx="27" fill="#ff5a00"/>
+      <path d="M23 128h82v34H23z" fill="#111827" opacity=".88"/>
+      <path d="M34 284h24v105H34zM75 284h24v105H75z" fill="#111827"/>
+      <path d="M22 128-3 236M106 128l25 108" stroke="#f6a464" stroke-width="18" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(83 282)">
+      <ellipse cx="63" cy="329" rx="51" ry="13" fill="#111827" opacity=".12"/>
+      <circle cx="64" cy="58" r="36" fill="#f6a464"/>
+      <path d="M25 48c9-29 34-45 69-30 15 7 23 20 25 38-25-11-58-13-94-8Z" fill="#111827"/>
+      <path d="M22 47c31-17 65-17 99 1l-7-30C78 3 48 5 29 22l-7 25Z" fill="#ff5a00" stroke="#111827" stroke-width="5"/>
+      <rect x="27" y="101" width="74" height="144" rx="24" fill="#ff5a00"/>
+      <path d="M27 126h74v29H27z" fill="#111827" opacity=".88"/>
+      <path d="M37 245h22v78H37zM72 245h22v78H72z" fill="#111827"/>
+      <path d="M26 125 3 205M102 125l23 80" stroke="#f6a464" stroke-width="16" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(982 252) scale(.95)">
+      <ellipse cx="63" cy="359" rx="54" ry="14" fill="#111827" opacity=".12"/>
+      <circle cx="64" cy="58" r="38" fill="#f6a464"/>
+      <path d="M25 48c9-30 34-47 70-31 16 7 24 21 26 39-26-12-59-14-96-8Z" fill="#111827"/>
+      <path d="M22 47c31-17 65-17 101 1l-8-31C78 2 48 4 29 22l-7 25Z" fill="#ff5a00" stroke="#111827" stroke-width="5"/>
+      <rect x="25" y="102" width="78" height="155" rx="25" fill="#ff5a00"/>
+      <path d="M25 127h78v31H25z" fill="#111827" opacity=".88"/>
+      <path d="M35 257h23v96H35zM74 257h23v96H74z" fill="#111827"/>
+      <path d="M23 126-1 214M105 126l24 88" stroke="#f6a464" stroke-width="17" stroke-linecap="round"/>
+    </g>
+  </g>
+  <defs><filter id="shadow" x="0" y="0" width="1200" height="820" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="24" stdDeviation="18" flood-color="#111827" flood-opacity=".18"/></filter></defs>
+</svg>
