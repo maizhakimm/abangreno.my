@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Abang Reno logo</title>
+  <desc id="desc">Round orange, black and white Abang Reno contractor brand logo.</desc>
+  <circle cx="256" cy="256" r="248" fill="#fff"/>
+  <circle cx="256" cy="256" r="238" fill="#ff5a00"/>
+  <circle cx="256" cy="256" r="217" fill="#070b12" stroke="#fff" stroke-width="8"/>
+  <path d="M168 168c6-56 45-90 92-90s86 34 92 90c-25-16-57-25-92-25s-67 9-92 25Z" fill="#111827" stroke="#fff" stroke-width="8"/>
+  <path d="M165 169c28-22 59-33 95-33 35 0 66 11 94 33-6 45-43 83-94 83s-89-38-95-83Z" fill="#fb8a2a" stroke="#070b12" stroke-width="6"/>
+  <path d="M172 163c19-31 50-48 88-48 39 0 70 17 88 48-34-13-139-13-176 0Z" fill="#0a0d13"/>
+  <text x="256" y="119" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="32" font-weight="900" fill="#fff" letter-spacing="1">ABANG</text>
+  <text x="256" y="153" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="36" font-weight="900" fill="#ff5a00" letter-spacing="1">RENO</text>
+  <path d="M212 190c8 10 22 16 40 16s32-6 40-16" stroke="#111827" stroke-width="9" stroke-linecap="round"/>
+  <path d="M223 159c8-4 18-4 26 0M271 159c8-4 18-4 26 0" stroke="#111827" stroke-width="8" stroke-linecap="round"/>
+  <path d="M72 248c0-14 11-26 25-28l318-30c17-2 31 11 31 28v50H72v-20Z" fill="#fff" stroke="#070b12" stroke-width="12"/>
+  <text x="256" y="273" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="88" font-weight="900" fill="#fff" stroke="#070b12" stroke-width="12" paint-order="stroke" letter-spacing="-5">ABANG</text>
+  <text x="256" y="374" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="120" font-weight="900" fill="#ff5a00" stroke="#070b12" stroke-width="14" paint-order="stroke" letter-spacing="-7">RENO</text>
+</svg>
