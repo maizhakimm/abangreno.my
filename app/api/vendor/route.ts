@@ -2,21 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { vendorProfileSchema } from "@/lib/validation/schemas";
 import { generateUniqueSlug } from "@/lib/utils/slug";
+import { normalizeMalaysianPhone } from "@/lib/utils/phone";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-/**
- * Creates a basic vendor listing (§14).
- *
- * §4 hardening: phone verification is mandatory and is read from the
- * server-trusted `profiles.phone_verified` column (which only
- * /api/profile/verify-phone-otp can ever set to true — see
- * 0004_security_hardening.sql). We never trust a boolean from the request body.
- *
- * §15 hardening: one vendor per user is also enforced at the DB level via
- * `vendors_user_id_unique`; we check first here purely to return a clean
- * error message instead of a raw constraint-violation error.
- */
+/** Creates a basic vendor listing with mandatory verified-phone enforcement. */
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const {
@@ -29,11 +19,12 @@ export async function POST(req: NextRequest) {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("phone_verified")
+    .select("phone, phone_verified")
     .eq("id", user.id)
     .single();
 
-  if (!profile?.phone_verified) {
+  const verifiedProfilePhone = profile?.phone ? normalizeMalaysianPhone(profile.phone) : null;
+  if (!profile?.phone_verified || !verifiedProfilePhone) {
     return NextResponse.json(
       { error: "Sila sahkan nombor telefon anda sebelum mendaftar sebagai vendor" },
       { status: 403 }
@@ -56,8 +47,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  // Validate that referenced category/location ids actually exist and are
-  // active, rather than trusting arbitrary UUIDs from the client.
+  const submittedPhone = normalizeMalaysianPhone(parsed.data.phone);
+  if (!submittedPhone || submittedPhone !== verifiedProfilePhone) {
+    return NextResponse.json(
+      { error: "Nombor telefon vendor mesti sama dengan nombor yang telah disahkan melalui OTP" },
+      { status: 409 }
+    );
+  }
+
   const admin = createAdminClient();
   const allCategoryIds = [parsed.data.primary_category_id, ...parsed.data.additional_category_ids];
   const { data: validCategories } = await admin
@@ -91,7 +88,7 @@ export async function POST(req: NextRequest) {
       business_name: parsed.data.business_name,
       slug,
       primary_category_id: parsed.data.primary_category_id,
-      phone: parsed.data.phone,
+      phone: verifiedProfilePhone,
       whatsapp: parsed.data.whatsapp,
       description: parsed.data.description,
       verification_status: "unverified",
@@ -122,16 +119,10 @@ export async function POST(req: NextRequest) {
   );
 
   if (catError || areaError) {
-    // Roll back the vendor row rather than leaving an incomplete listing —
-    // uses admin client since vendor deletion isn't exposed to the owner policy.
     await admin.from("vendors").delete().eq("id", vendor.id);
     return NextResponse.json({ error: "Gagal menyimpan kategori/kawasan servis" }, { status: 500 });
   }
 
-  // profiles.role is protected against direct client writes (see
-  // 0004_security_hardening.sql), so this trusted transition — "user just
-  // successfully created a vendor listing, promote their role" — must go
-  // through the service-role admin client, not the regular RLS-scoped one.
   await admin.from("profiles").update({ role: "vendor" }).eq("id", user.id);
 
   const { data: primaryCategory } = await admin
