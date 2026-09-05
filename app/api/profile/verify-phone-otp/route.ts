@@ -10,20 +10,9 @@ const verifyOtpSchema = z.object({
 });
 
 /**
- * Step 2: verify the SMS OTP code (§2 hardening).
- *
- * After supabase.auth.verifyOtp() returns success, we do NOT immediately
- * trust that as "this user's phone is now verified" — we explicitly check:
- *   1. data.user exists at all
- *   2. data.user.id === the currently authenticated user's id (prevents a
- *      race/confusion where a verifyOtp call somehow resolves to a
- *      different session than the one making this request)
- *   3. the phone Supabase Auth reports as now-verified on that user
- *      normalizes to the SAME value as what was submitted in this request
- * Only once all three hold do we use the SERVICE ROLE client to write
- * profiles.phone / profiles.phone_verified — this remains the only code
- * path allowed to set phone_verified = true (enforced independently by the
- * DB trigger in 0004_security_hardening.sql).
+ * Step 2: verify the SMS OTP code.
+ * The verified phone stored in profiles is the authoritative vendor contact
+ * phone. Clients must not be able to replace it with an unverified number.
  */
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -56,7 +45,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  // Explicit identity + phone-match checks — do not shortcut these.
   if (!data.user) {
     return NextResponse.json({ error: "Pengesahan OTP gagal" }, { status: 400 });
   }
@@ -73,14 +61,16 @@ export async function POST(req: NextRequest) {
   }
 
   const admin = createAdminClient();
-  const { error: updateError } = await admin
+  const { data: updatedProfile, error: updateError } = await admin
     .from("profiles")
     .update({ phone: normalizedSubmittedPhone, phone_verified: true })
-    .eq("id", currentUser.id);
+    .eq("id", currentUser.id)
+    .select("phone")
+    .maybeSingle();
 
-  if (updateError) {
+  if (updateError || !updatedProfile?.phone) {
     return NextResponse.json({ error: "Gagal mengemas kini status pengesahan" }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, phone: updatedProfile.phone });
 }
