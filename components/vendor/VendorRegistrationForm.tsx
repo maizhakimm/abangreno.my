@@ -14,11 +14,12 @@ function countWords(text: string) {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
-/** §14 — collects the basic listing fields only. SSM upload is a separate, optional later step. */
 export default function VendorRegistrationForm({
+  verifiedPhone,
   categories,
   locations,
 }: {
+  verifiedPhone: string;
   categories: Option[];
   locations: Option[];
 }) {
@@ -42,7 +43,7 @@ export default function VendorRegistrationForm({
         business_name: formData.get("business_name"),
         primary_category_id: formData.get("primary_category_id"),
         additional_category_ids: [],
-        phone: formData.get("phone"),
+        phone: verifiedPhone,
         whatsapp: formData.get("whatsapp"),
         description,
         service_area_ids: formData.getAll("service_area_ids"),
@@ -52,12 +53,13 @@ export default function VendorRegistrationForm({
     const data = await res.json();
 
     if (!res.ok) {
-      setErrorMessage(data.error ?? "Gagal menghantar. Sila cuba lagi.");
+      setErrorMessage(typeof data.error === "string" ? data.error : "Gagal menghantar. Sila cuba lagi.");
       setStatus("error");
       return;
     }
 
     router.push("/dashboard");
+    router.refresh();
   }
 
   return (
@@ -88,21 +90,21 @@ export default function VendorRegistrationForm({
         </select>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium">Telefon</label>
-          <input
-            name="phone"
-            required
-            placeholder="+60123456789"
-            className="focus-ring mt-1 w-full rounded-lg border border-black/10 px-3 py-2 text-sm"
-          />
+          <label className="block text-sm font-medium">Telefon Disahkan</label>
+          <div className="mt-1 rounded-lg border border-green-700/20 bg-green-50 px-3 py-2 text-sm font-medium text-green-800">
+            {verifiedPhone} ✓
+          </div>
+          <p className="mt-1 text-xs text-charcoal/50">Nombor ini telah disahkan melalui OTP dan tidak boleh diubah di sini.</p>
         </div>
         <div>
           <label className="block text-sm font-medium">WhatsApp</label>
           <input
             name="whatsapp"
             required
+            type="tel"
+            defaultValue={verifiedPhone}
             placeholder="+60123456789"
             className="focus-ring mt-1 w-full rounded-lg border border-black/10 px-3 py-2 text-sm"
           />
@@ -124,8 +126,7 @@ export default function VendorRegistrationForm({
       <div>
         <label className="block text-sm font-medium">Penerangan Perniagaan</label>
         <p className="text-xs text-charcoal/50">
-          Terangkan pengalaman anda, jenis servis, kawasan liputan dan kelebihan perkhidmatan
-          anda.
+          Terangkan pengalaman anda, jenis servis, kawasan liputan dan kelebihan perkhidmatan anda.
         </p>
         <textarea
           value={description}
