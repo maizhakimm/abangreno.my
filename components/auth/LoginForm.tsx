@@ -1,15 +1,23 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 /**
- * §15 — Phone OTP UI abstraction. Actual SMS provider is configured later
- * via Supabase Auth settings + env vars; this component just calls the
- * standard Supabase Auth phone methods, which work once a provider is set.
+ * Sign-in UI for Google, email magic link, and phone OTP.
+ * OAuth and email PKCE flows return through /auth/callback so the auth code
+ * can be exchanged server-side and persisted in cookies for SSR routes.
  */
 export default function LoginForm() {
   const supabase = createClient();
+  const searchParams = useSearchParams();
+  const requestedNext = searchParams.get("redirectTo");
+  const nextPath = requestedNext?.startsWith("/") && !requestedNext.startsWith("//")
+    ? requestedNext
+    : "/dashboard";
+  const callbackUrl = `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
+
   const [mode, setMode] = useState<"choice" | "email" | "phone">("choice");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -18,17 +26,18 @@ export default function LoginForm() {
   const [message, setMessage] = useState<string | null>(null);
 
   async function handleGoogleLogin() {
-    await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo: callbackUrl },
     });
+    if (error) setMessage(error.message);
   }
 
   async function handleEmailLogin(e: React.FormEvent) {
     e.preventDefault();
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}/dashboard` },
+      options: { emailRedirectTo: callbackUrl },
     });
     setMessage(error ? error.message : "Pautan log masuk telah dihantar ke emel anda.");
   }
@@ -47,16 +56,13 @@ export default function LoginForm() {
   async function handleVerifyPhoneOtp(e: React.FormEvent) {
     e.preventDefault();
     const { error } = await supabase.auth.verifyOtp({ phone, token: otp, type: "sms" });
-    setMessage(error ? error.message : "Log masuk berjaya!");
-  }
+    if (error) {
+      setMessage(error.message);
+      return;
+    }
 
-  // Note: this component handles SIGN-IN via phone (an existing account
-  // logging in with an already-verified phone). Mandatory phone verification
-  // for accounts that signed up via Google/email — required before vendor
-  // registration — is a separate step, handled by PhoneVerificationForm
-  // (components/auth/PhoneVerificationForm.tsx) using /api/profile/send-phone-otp
-  // and /api/profile/verify-phone-otp, which are the only endpoints trusted
-  // to flip profiles.phone_verified.
+    window.location.assign(nextPath);
+  }
 
   if (mode === "choice") {
     return (
