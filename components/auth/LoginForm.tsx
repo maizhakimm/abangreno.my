@@ -16,7 +16,6 @@ export default function LoginForm() {
   const nextPath = requestedNext?.startsWith("/") && !requestedNext.startsWith("//")
     ? requestedNext
     : "/dashboard";
-  const callbackUrl = `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
 
   const [mode, setMode] = useState<"choice" | "email" | "phone">("choice");
   const [email, setEmail] = useState("");
@@ -25,10 +24,14 @@ export default function LoginForm() {
   const [otpSent, setOtpSent] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  function getCallbackUrl() {
+    return `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
+  }
+
   async function handleGoogleLogin() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: callbackUrl },
+      options: { redirectTo: getCallbackUrl() },
     });
     if (error) setMessage(error.message);
   }
@@ -37,7 +40,7 @@ export default function LoginForm() {
     e.preventDefault();
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: callbackUrl },
+      options: { emailRedirectTo: getCallbackUrl() },
     });
     setMessage(error ? error.message : "Pautan log masuk telah dihantar ke emel anda.");
   }
