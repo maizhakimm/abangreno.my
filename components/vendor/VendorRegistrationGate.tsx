@@ -11,18 +11,20 @@ interface Option {
 
 export default function VendorRegistrationGate({
   phoneVerified,
+  verifiedPhone,
   categories,
   locations,
 }: {
   phoneVerified: boolean;
+  verifiedPhone: string | null;
   categories: Option[];
   locations: Option[];
 }) {
-  const [verified, setVerified] = useState(phoneVerified);
+  const [phone, setPhone] = useState<string | null>(phoneVerified ? verifiedPhone : null);
 
-  if (!verified) {
-    return <PhoneVerificationForm onVerified={() => setVerified(true)} />;
+  if (!phone) {
+    return <PhoneVerificationForm onVerified={(verified) => setPhone(verified)} />;
   }
 
-  return <VendorRegistrationForm categories={categories} locations={locations} />;
+  return <VendorRegistrationForm verifiedPhone={phone} categories={categories} locations={locations} />;
 }
