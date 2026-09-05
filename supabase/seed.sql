@@ -1,8 +1,14 @@
 -- ============================================================================
--- AbangReno.my — Local Development Seed Data
--- Run after migrations: supabase db reset (auto-runs seed.sql), or
--- psql "$DATABASE_URL" -f supabase/seed.sql
+-- AbangReno.my — Demo / Staging Seed Data
+-- Run after migrations 0001 -> 0009.
+--
+-- This seed intentionally creates three demo auth.users rows so the public
+-- demo vendor/review data satisfies profiles.id -> auth.users(id) foreign keys.
+-- These accounts are seed fixtures only and are not intended for production
+-- login. Replace/remove demo data before production launch.
 -- ============================================================================
+
+begin;
 
 -- ---------------------------------------------------------------------------
 -- CATEGORIES
@@ -24,35 +30,105 @@ on conflict (slug) do nothing;
 -- LOCATIONS
 -- ---------------------------------------------------------------------------
 insert into locations (name, slug, state, state_slug, type) values
-('Selangor', 'selangor', 'Selangor', 'selangor', 'state'),
-('Kuala Lumpur', 'kuala-lumpur', 'Kuala Lumpur', 'kuala-lumpur', 'state')
+('Selangor', 'selangor', 'Selangor', 'selangor', 'state'::location_type),
+('Kuala Lumpur', 'kuala-lumpur', 'Kuala Lumpur', 'kuala-lumpur', 'state'::location_type)
 on conflict (slug) do nothing;
 
 insert into locations (name, slug, state, state_slug, type, parent_id)
-select 'Shah Alam', 'shah-alam', 'Selangor', 'selangor', 'city', id from locations where slug = 'selangor'
+select 'Shah Alam', 'shah-alam', 'Selangor', 'selangor', 'city'::location_type, id from locations where slug = 'selangor'
 union all
-select 'Klang', 'klang', 'Selangor', 'selangor', 'city', id from locations where slug = 'selangor'
+select 'Klang', 'klang', 'Selangor', 'selangor', 'city'::location_type, id from locations where slug = 'selangor'
 union all
-select 'Subang Jaya', 'subang-jaya', 'Selangor', 'selangor', 'city', id from locations where slug = 'selangor'
+select 'Subang Jaya', 'subang-jaya', 'Selangor', 'selangor', 'city'::location_type, id from locations where slug = 'selangor'
 union all
-select 'Petaling Jaya', 'petaling-jaya', 'Selangor', 'selangor', 'city', id from locations where slug = 'selangor'
+select 'Petaling Jaya', 'petaling-jaya', 'Selangor', 'selangor', 'city'::location_type, id from locations where slug = 'selangor'
 union all
-select 'Puchong', 'puchong', 'Selangor', 'selangor', 'city', id from locations where slug = 'selangor'
+select 'Puchong', 'puchong', 'Selangor', 'selangor', 'city'::location_type, id from locations where slug = 'selangor'
 on conflict (slug) do nothing;
 
 -- ---------------------------------------------------------------------------
--- DEMO PROFILES + VENDORS
--- NOTE: In real usage, profiles are created automatically via the
--- on_auth_user_created trigger when someone signs up through Supabase Auth.
--- For local seeding we insert directly with fixed UUIDs (no matching auth
--- user), which is fine for local dev but must not be used in production.
+-- DEMO AUTH USERS + PROFILES
 -- ---------------------------------------------------------------------------
-insert into profiles (id, name, email, phone, phone_verified, role) values
-('11111111-1111-1111-1111-111111111111', 'Ahmad Zulkifli', 'ahmad@example.com', '+60123456789', true, 'vendor'),
-('22222222-2222-2222-2222-222222222222', 'Siti Rahmah', 'siti@example.com', '+60129876543', true, 'vendor'),
-('33333333-3333-3333-3333-333333333333', 'Admin Utama', 'admin@abangreno.my', '+60111111111', true, 'admin')
+-- profiles.id has a required FK to auth.users(id). For a remote demo/staging
+-- seed we therefore create inert auth fixtures first. The normal
+-- on_auth_user_created trigger will create matching profile rows.
+insert into auth.users (
+  instance_id,
+  id,
+  aud,
+  role,
+  email,
+  encrypted_password,
+  email_confirmed_at,
+  raw_app_meta_data,
+  raw_user_meta_data,
+  created_at,
+  updated_at,
+  confirmation_token,
+  recovery_token,
+  email_change_token_new,
+  email_change
+) values
+(
+  '00000000-0000-0000-0000-000000000000',
+  '11111111-1111-1111-1111-111111111111',
+  'authenticated',
+  'authenticated',
+  'ahmad.demo@abangreno.invalid',
+  crypt(gen_random_uuid()::text, gen_salt('bf')),
+  now(),
+  '{"provider":"email","providers":["email"]}'::jsonb,
+  '{}'::jsonb,
+  now(), now(), '', '', '', ''
+),
+(
+  '00000000-0000-0000-0000-000000000000',
+  '22222222-2222-2222-2222-222222222222',
+  'authenticated',
+  'authenticated',
+  'siti.demo@abangreno.invalid',
+  crypt(gen_random_uuid()::text, gen_salt('bf')),
+  now(),
+  '{"provider":"email","providers":["email"]}'::jsonb,
+  '{}'::jsonb,
+  now(), now(), '', '', '', ''
+),
+(
+  '00000000-0000-0000-0000-000000000000',
+  '33333333-3333-3333-3333-333333333333',
+  'authenticated',
+  'authenticated',
+  'reviewer.demo@abangreno.invalid',
+  crypt(gen_random_uuid()::text, gen_salt('bf')),
+  now(),
+  '{"provider":"email","providers":["email"]}'::jsonb,
+  '{}'::jsonb,
+  now(), now(), '', '', '', ''
+)
 on conflict (id) do nothing;
 
+update profiles
+set name = 'Ahmad Zulkifli',
+    phone = '+60123456789',
+    phone_verified = true,
+    role = 'vendor'::user_role
+where id = '11111111-1111-1111-1111-111111111111';
+
+update profiles
+set name = 'Siti Rahmah',
+    phone = '+60129876543',
+    phone_verified = true,
+    role = 'vendor'::user_role
+where id = '22222222-2222-2222-2222-222222222222';
+
+update profiles
+set name = 'Demo Reviewer',
+    role = 'user'::user_role
+where id = '33333333-3333-3333-3333-333333333333';
+
+-- ---------------------------------------------------------------------------
+-- DEMO VENDORS
+-- ---------------------------------------------------------------------------
 insert into vendors (
   id, user_id, business_name, slug, primary_category_id, phone, whatsapp,
   description, verification_status, is_active, profile_completeness
@@ -66,7 +142,7 @@ select
   '+60123456789',
   '+60123456789',
   'Ahmad Plumbing Services menawarkan perkhidmatan tukang paip yang lengkap di kawasan Shah Alam dan sekitarnya. Dengan pengalaman lebih 10 tahun dalam industri, kami mengendalikan pelbagai masalah paip termasuk paip bocor, sinki tersumbat, pemasangan tangki air, pembaikan tandas dan pendawaian paip baru untuk rumah baru mahupun renovation. Kami komited kepada kerja yang kemas, harga yang telus dan respon yang pantas untuk setiap panggilan kecemasan. Semua kerja disertakan waranti minimum 3 bulan bagi pemasangan baru. Pelanggan boleh menghubungi kami terus melalui WhatsApp untuk sebut harga percuma sebelum kerja dimulakan.',
-  'verified_ssm',
+  'verified_ssm'::verification_status,
   true,
   85
 from categories c where c.slug = 'tukang-paip'
@@ -85,13 +161,12 @@ select
   '+60129876543',
   '+60129876543',
   'Siti Waterproofing Solutions pakar dalam servis kalis air untuk bumbung rata, tandas, balkoni dan dinding bertingkat di kawasan Klang Valley. Kami menggunakan bahan waterproofing berkualiti tinggi yang sesuai dengan cuaca tropika Malaysia dan menawarkan pemeriksaan percuma sebelum sebut harga dikeluarkan. Setiap projek disertakan waranti bertulis dan susulan pemeriksaan selepas hujan lebat pertama. Pasukan kami berpengalaman menangani kebocoran yang kompleks termasuk kebocoran dari sambungan paip dalam dinding dan kebocoran struktur lama. Hubungi kami melalui WhatsApp untuk lawatan tapak percuma.',
-  'pending',
+  'pending'::verification_status,
   true,
   70
 from categories c where c.slug = 'waterproofing'
 on conflict (id) do nothing;
 
--- Vendor categories, service areas, services for demo vendors
 insert into vendor_categories (vendor_id, category_id, is_primary)
 select 'aaaaaaaa-0000-0000-0000-000000000001', id, true from categories where slug = 'tukang-paip'
 union all
@@ -103,6 +178,13 @@ select 'aaaaaaaa-0000-0000-0000-000000000001', id from locations where slug in (
 union all
 select 'aaaaaaaa-0000-0000-0000-000000000002', id from locations where slug in ('klang', 'petaling-jaya', 'puchong')
 on conflict do nothing;
+
+-- Keep demo services idempotent across reruns.
+delete from vendor_services
+where vendor_id in (
+  'aaaaaaaa-0000-0000-0000-000000000001',
+  'aaaaaaaa-0000-0000-0000-000000000002'
+);
 
 insert into vendor_services (vendor_id, title, description, price_from, price_unit) values
 ('aaaaaaaa-0000-0000-0000-000000000001', 'Baiki Paip Bocor', 'Pembaikan kebocoran paip air di dapur, bilik air dan luar rumah.', 80, 'per visit'),
@@ -122,17 +204,26 @@ select
   'Saya dah panggil tukang paip 2 kali untuk baiki paip bawah sink dapur tapi selepas beberapa minggu bocor lagi. Ada sesiapa tahu punca sebenar isu ini?',
   'Shah Alam',
   'Homeowner123',
-  'visible'
+  'visible'::moderation_status
 from categories c where c.slug = 'tukang-paip'
 on conflict (id) do nothing;
 
+delete from forum_replies
+where post_id = 'bbbbbbbb-0000-0000-0000-000000000001';
+
 insert into forum_replies (post_id, content, is_vendor_reply, vendor_id, guest_name, status) values
-('bbbbbbbb-0000-0000-0000-000000000001', 'Selalunya isu ini berlaku sebab gasket atau seal asal dah haus dan hanya ditampal buat sementara, bukan digantikan terus. Cadangan saya, minta tukang tukar terus fitting P-trap dan seal baru, bukan sekadar sealant.', true, 'aaaaaaaa-0000-0000-0000-000000000001', null, 'visible'),
-('bbbbbbbb-0000-0000-0000-000000000001', 'Sama macam kes saya dulu, last-last kena tukar full fitting baru baru settle.', false, null, 'JiranSebelah', 'visible');
+('bbbbbbbb-0000-0000-0000-000000000001', 'Selalunya isu ini berlaku sebab gasket atau seal asal dah haus dan hanya ditampal buat sementara, bukan digantikan terus. Cadangan saya, minta tukang tukar terus fitting P-trap dan seal baru, bukan sekadar sealant.', true, 'aaaaaaaa-0000-0000-0000-000000000001', null, 'visible'::moderation_status),
+('bbbbbbbb-0000-0000-0000-000000000001', 'Sama macam kes saya dulu, last-last kena tukar full fitting baru baru settle.', false, null, 'JiranSebelah', 'visible'::moderation_status);
 
 -- ---------------------------------------------------------------------------
 -- DEMO REVIEW
 -- ---------------------------------------------------------------------------
 insert into reviews (vendor_id, user_id, rating, comment, status) values
-('aaaaaaaa-0000-0000-0000-000000000001', '33333333-3333-3333-3333-333333333333', 5, 'Responsif dan kerja kemas. Datang tepat masa dan selesaikan masalah paip bocor dengan cepat.', 'visible')
-on conflict (vendor_id, user_id) do nothing;
+('aaaaaaaa-0000-0000-0000-000000000001', '33333333-3333-3333-3333-333333333333', 5, 'Responsif dan kerja kemas. Datang tepat masa dan selesaikan masalah paip bocor dengan cepat.', 'visible'::review_status)
+on conflict (vendor_id, user_id) do update
+set rating = excluded.rating,
+    comment = excluded.comment,
+    status = excluded.status,
+    updated_at = now();
+
+commit;
