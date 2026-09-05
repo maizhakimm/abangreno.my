@@ -2,15 +2,11 @@
 
 import { useState } from "react";
 
-/**
- * §4 — mandatory phone verification gate before vendor registration.
- * Google/email login does NOT count. This calls the trusted server routes
- * (/api/profile/send-phone-otp, /api/profile/verify-phone-otp) which are the
- * only code paths allowed to set profiles.phone_verified = true (enforced by
- * the DB trigger in 0004_security_hardening.sql — a client can never set
- * this boolean directly).
- */
-export default function PhoneVerificationForm({ onVerified }: { onVerified: () => void }) {
+export default function PhoneVerificationForm({
+  onVerified,
+}: {
+  onVerified: (phone: string) => void;
+}) {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState<"phone" | "otp">("phone");
@@ -51,7 +47,12 @@ export default function PhoneVerificationForm({ onVerified }: { onVerified: () =
       setStatus("error");
       return;
     }
-    onVerified();
+    if (!data.phone) {
+      setError("Nombor telefon yang disahkan tidak dapat dikenal pasti");
+      setStatus("error");
+      return;
+    }
+    onVerified(data.phone);
   }
 
   return (
@@ -59,6 +60,7 @@ export default function PhoneVerificationForm({ onVerified }: { onVerified: () =
       <h2 className="font-bold">Sahkan Nombor Telefon</h2>
       <p className="mt-1 text-xs text-charcoal/60">
         Pengesahan nombor telefon diperlukan sebelum anda boleh mendaftar sebagai vendor.
+        Nombor yang disahkan akan digunakan sebagai nombor telefon rasmi profil anda.
       </p>
 
       {step === "phone" ? (
