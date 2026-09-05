@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { buildMetadata } from "@/lib/seo/metadata";
 import LoginForm from "@/components/auth/LoginForm";
 
@@ -16,7 +17,9 @@ export default function LoginPage() {
         Log masuk untuk menguruskan profil vendor, memberi ulasan atau mengakses dashboard anda.
       </p>
       <div className="mt-6 w-full rounded-card bg-white p-5 shadow-sm">
-        <LoginForm />
+        <Suspense fallback={<p className="text-sm text-charcoal/60">Memuatkan...</p>}>
+          <LoginForm />
+        </Suspense>
       </div>
     </section>
   );
