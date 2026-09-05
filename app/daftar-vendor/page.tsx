@@ -23,7 +23,7 @@ export default async function VendorRegistrationPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("phone_verified")
+    .select("phone, phone_verified")
     .eq("id", user.id)
     .single();
 
@@ -55,6 +55,7 @@ export default async function VendorRegistrationPage() {
       <div className="mt-6 rounded-card bg-white p-5 shadow-sm">
         <VendorRegistrationGate
           phoneVerified={profile?.phone_verified ?? false}
+          verifiedPhone={profile?.phone ?? null}
           categories={categories ?? []}
           locations={locations ?? []}
         />
