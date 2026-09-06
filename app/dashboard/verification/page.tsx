@@ -11,13 +11,19 @@ const STATUS_LABELS: Record<VerificationStatus, { label: string; className: stri
   rejected: { label: "Ditolak", className: "bg-red-100 text-red-700" },
 };
 
+function asVerificationStatus(value: unknown): VerificationStatus {
+  return value === "pending" || value === "verified_ssm" || value === "rejected"
+    ? value
+    : "unverified";
+}
+
 export default async function DashboardVerificationPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
   const { data: vendor } = await supabase.from("vendors").select("id, verification_status").eq("user_id", user.id).maybeSingle();
-  const status = vendor?.verification_status ?? "unverified";
+  const status = asVerificationStatus(vendor?.verification_status);
   const statusInfo = STATUS_LABELS[status];
   const canSubmit = status === "unverified" || status === "rejected";
 
