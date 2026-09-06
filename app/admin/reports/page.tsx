@@ -240,7 +240,7 @@ export default async function AdminReportsPage({ searchParams }: PageProps) {
             {previews.get(r.id) && (
               <p className="mt-1 text-xs">
                 {previews.get(r.id)!.href ? (
-                  <a href={previews.get(r.id)!.href} className="text-brand hover:underline" target="_blank" rel="noopener noreferrer">
+                  <a href={previews.get(r.id)!.href ?? undefined} className="text-brand hover:underline" target="_blank" rel="noopener noreferrer">
                     {previews.get(r.id)!.label}
                   </a>
                 ) : (
