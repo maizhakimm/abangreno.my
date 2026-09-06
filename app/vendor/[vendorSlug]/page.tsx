@@ -67,7 +67,7 @@ export default async function VendorProfilePage({ params }: PageProps) {
               {vendor.total_reviews > 0 && <span>⭐ {vendor.avg_rating.toFixed(1)} ({vendor.total_reviews} ulasan)</span>}
               {breadcrumbCategorySlug && <Link href={`/kategori/${breadcrumbCategorySlug}`} className="text-brand hover:underline">{breadcrumbCategoryName}</Link>}
             </div>
-            {vendor.service_areas?.length > 0 && <p className="mt-1 text-sm text-charcoal/60">Kawasan servis: {vendor.service_areas.map((a) => a.name).join(", ")}</p>}
+            {(vendor.service_areas?.length ?? 0) > 0 && <p className="mt-1 text-sm text-charcoal/60">Kawasan servis: {(vendor.service_areas ?? []).map((a) => a.name).join(", ")}</p>}
           </div>
           {vendor.whatsapp && <WhatsAppButton phone={vendor.whatsapp} message={`Hi ${vendor.business_name}, saya jumpa perniagaan anda di AbangReno.my`} className="w-full sm:w-auto" />}
         </div>
@@ -79,8 +79,8 @@ export default async function VendorProfilePage({ params }: PageProps) {
           <div className="mt-6"><h2 className="text-sm font-bold text-charcoal/60">Kategori Lain</h2><div className="mt-2 flex flex-wrap gap-2">{vendor.categories.filter((c) => c.slug !== breadcrumbCategorySlug).map((c) => <Link key={c.id} href={`/kategori/${c.slug}`} className="rounded-full bg-offwhite px-3 py-1 text-xs font-medium hover:text-brand">{c.name}</Link>)}</div></div>
         )}
 
-        {vendor.services?.length > 0 && (
-          <div className="mt-8"><h2 className="text-lg font-bold">Servis Ditawarkan</h2><ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">{vendor.services.map((service) => <li key={service.id} className="rounded-card border border-black/5 bg-white p-3 text-sm"><p className="font-semibold">{service.title}</p>{service.price_from != null && <p className="text-charcoal/60">Bermula RM{service.price_from} {service.price_unit ?? ""}</p>}</li>)}</ul></div>
+        {(vendor.services?.length ?? 0) > 0 && (
+          <div className="mt-8"><h2 className="text-lg font-bold">Servis Ditawarkan</h2><ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">{(vendor.services ?? []).map((service) => <li key={service.id} className="rounded-card border border-black/5 bg-white p-3 text-sm"><p className="font-semibold">{service.title}</p>{service.price_from != null && <p className="text-charcoal/60">Bermula RM{service.price_from} {service.price_unit ?? ""}</p>}</li>)}</ul></div>
         )}
 
         {galleryImages.length > 0 && (
