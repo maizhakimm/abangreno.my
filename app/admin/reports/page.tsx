@@ -1,11 +1,10 @@
 import { redirect } from "next/navigation";
 import { checkAdminAuth } from "@/lib/auth/admin";
+import { createClient } from "@/lib/supabase/server";
 import ReportActions from "@/components/admin/ReportActions";
 import type { Report } from "@/types/database";
 
-type SupabaseServerClient = Awaited<ReturnType<typeof checkAdminAuth>> extends { ok: true; supabase: infer S }
-  ? S
-  : never;
+type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
 interface TargetPreview {
   label: string;
