@@ -5,12 +5,15 @@ import { containsSpamKeywords, decideInitialStatus } from "@/lib/moderation/spam
 import { hashIp, isRateLimited } from "@/lib/moderation/rateLimit";
 import { verifyTurnstileToken } from "@/lib/security/turnstile";
 import { getOrCreateSessionToken } from "@/lib/security/session";
+import { safeJsonBody } from "@/lib/utils/safeJson";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const parsed = forumReplySchema.safeParse(body);
+  const parsedBody = await safeJsonBody(req);
+  if ("errorResponse" in parsedBody) return parsedBody.errorResponse;
+
+  const parsed = forumReplySchema.safeParse(parsedBody.data);
 
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
@@ -93,6 +96,7 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (error || !reply) {
+    console.error("Failed to create forum reply:", error?.message);
     return NextResponse.json({ error: "Gagal menghantar jawapan" }, { status: 500 });
   }
 

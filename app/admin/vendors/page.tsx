@@ -1,7 +1,12 @@
-import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { checkAdminAuth } from "@/lib/auth/admin";
 
 export default async function AdminVendorsPage() {
-  const supabase = await createClient();
+  const auth = await checkAdminAuth();
+  if (!auth.ok) {
+    redirect(auth.reason === "unauthenticated" ? "/login" : "/");
+  }
+  const supabase = auth.supabase;
   const { data: vendors } = await supabase
     .from("vendors")
     .select("id, business_name, slug, verification_status, is_active, total_reviews, avg_rating")

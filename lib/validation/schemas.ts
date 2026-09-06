@@ -38,7 +38,11 @@ export const reviewSchema = z.object({
 });
 
 export const forumPostSchema = z.object({
-  category_id: z.string().uuid(),
+  category_slug: z
+    .string()
+    .min(1)
+    .max(100)
+    .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Kategori tidak sah"),
   title: z.string().min(10, "Tajuk terlalu pendek").max(200),
   content: z.string().min(20, "Soalan terlalu pendek").max(5000),
   location_tag: z.string().max(100).optional(),
@@ -60,6 +64,20 @@ export const reportSchema = z.object({
   target_id: z.string().uuid(),
   reason: z.string().min(3).max(200),
   details: z.string().max(1000).optional(),
+});
+
+/**
+ * Admin report moderation action (§ADMIN REPORT UI). `target_status` is
+ * only required/consulted when `decision === "take_action"`, and its
+ * allowed values depend on the report's target_type — validated in the
+ * route itself (Zod alone can't express that cross-field dependency
+ * cleanly without a discriminated union keyed on data we don't have until
+ * we've already loaded the report row).
+ */
+export const adminReportActionSchema = z.object({
+  report_id: z.string().uuid(),
+  decision: z.enum(["mark_reviewed", "take_action"]),
+  target_status: z.enum(["removed", "visible", "flagged", "deactivate", "reactivate"]).optional(),
 });
 
 export const verificationUploadSchema = z.object({

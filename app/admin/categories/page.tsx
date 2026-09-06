@@ -1,7 +1,12 @@
-import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { checkAdminAuth } from "@/lib/auth/admin";
 
 export default async function AdminCategoriesPage() {
-  const supabase = await createClient();
+  const auth = await checkAdminAuth();
+  if (!auth.ok) {
+    redirect(auth.reason === "unauthenticated" ? "/login" : "/");
+  }
+  const supabase = auth.supabase;
   const { data: categories } = await supabase.from("categories").select("*").order("name");
 
   return (

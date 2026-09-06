@@ -1,23 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { reportSchema } from "@/lib/validation/schemas";
 import { hashIp, isReportRateLimited } from "@/lib/moderation/rateLimit";
+import { safeJsonBody } from "@/lib/utils/safeJson";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * §13 — reports never auto-remove content; this only ever creates a
- * 'pending' record for admin review. Anonymous reporting is allowed, but
- * rate-limited by hashed IP (5/hour, see lib/moderation/rateLimit.ts) the
- * same way guest forum posts are. All writes go through the SERVICE ROLE
- * client — reports has no client-facing INSERT policy at all (see
- * 0006_reports_insert_lockdown.sql), so this Route Handler is the only path
- * that can create a report, which is what makes the rate limit actually
- * enforceable (a direct browser call to Supabase would be rejected by RLS).
- * The service-role key itself never leaves the server.
+ * Reports never auto-remove content; this only ever creates a 'pending'
+ * record for admin review. Anonymous reporting is allowed, but rate-limited
+ * by hashed IP (5/hour, see lib/moderation/rateLimit.ts) the same way guest
+ * forum posts are. All writes go through the SERVICE ROLE client — reports
+ * has no client-facing INSERT policy at all, so this Route Handler is the
+ * only path that can create a report, which is what makes the rate limit
+ * actually enforceable. The service-role key itself never leaves the server.
  */
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const parsed = reportSchema.safeParse(body);
+  const parsedBody = await safeJsonBody(req);
+  if ("errorResponse" in parsedBody) return parsedBody.errorResponse;
+
+  const parsed = reportSchema.safeParse(parsedBody.data);
 
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
@@ -68,6 +69,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (error) {
+    console.error("Failed to create report:", error.message);
     return NextResponse.json({ error: "Gagal menghantar laporan" }, { status: 500 });
   }
 

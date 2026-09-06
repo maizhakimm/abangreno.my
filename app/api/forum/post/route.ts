@@ -6,28 +6,33 @@ import { hashIp, isRateLimited } from "@/lib/moderation/rateLimit";
 import { verifyTurnstileToken } from "@/lib/security/turnstile";
 import { getOrCreateSessionToken } from "@/lib/security/session";
 import { generateUniqueSlug } from "@/lib/utils/slug";
+import { safeJsonBody } from "@/lib/utils/safeJson";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * Guest-postable forum question endpoint (§20, §22, §5).
+ * Guest-postable forum question endpoint.
  * Uses the SERVICE ROLE client (bypassing RLS) because forum_posts has no
  * anon INSERT policy — all validation, spam filtering, rate limiting, and
  * Turnstile verification happens here, server-side, before a row is ever
  * created.
  */
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { category_slug, ...rest } = body;
+  const parsedBody = await safeJsonBody(req);
+  if ("errorResponse" in parsedBody) return parsedBody.errorResponse;
 
-  const parsed = forumPostSchema.safeParse(rest);
+  // §B2 — category_slug is now part of the Zod schema itself (slug-shaped
+  // string), rather than being pulled out of the raw body untyped and
+  // trusted. Anything malformed (wrong type, empty, not slug-shaped) is
+  // rejected here before it ever reaches a database query.
+  const parsed = forumPostSchema.safeParse(parsedBody.data);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 
-  // §5 — real Turnstile verification. Reject missing/invalid/expired tokens
+  // Real Turnstile verification. Reject missing/invalid/expired tokens
   // BEFORE touching the database.
   const turnstileOk = await verifyTurnstileToken(parsed.data.turnstile_token, ip);
   if (!turnstileOk) {
@@ -39,9 +44,9 @@ export async function POST(req: NextRequest) {
   const { data: category } = await admin
     .from("categories")
     .select("id")
-    .eq("slug", category_slug)
+    .eq("slug", parsed.data.category_slug)
     .eq("is_active", true)
-    .single();
+    .maybeSingle();
 
   if (!category) {
     return NextResponse.json({ error: "Kategori tidak sah" }, { status: 400 });
@@ -72,8 +77,8 @@ export async function POST(req: NextRequest) {
     data: { user },
   } = await supabaseServer.auth.getUser();
 
-  // §14 — mint/read the guest session cookie so this post can later be
-  // claimed after the guest registers.
+  // §B3 — an authenticated user's own identity is already captured via
+  // user_id; guest_name/guest_email are only ever stored for genuine guests.
   const sessionToken = await getOrCreateSessionToken();
 
   const slug = await generateUniqueSlug(parsed.data.title, async (candidate) => {
@@ -100,11 +105,12 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (error || !post) {
+    console.error("Failed to create forum post:", error?.message);
     return NextResponse.json({ error: "Gagal menghantar soalan" }, { status: 500 });
   }
 
   if (status === "visible") {
-    revalidatePath(`/forum/${category_slug}`);
+    revalidatePath(`/forum/${parsed.data.category_slug}`);
   }
 
   return NextResponse.json({ post, status }, { status: 201 });

@@ -1,8 +1,13 @@
-import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { checkAdminAuth } from "@/lib/auth/admin";
 import ModerationActions from "@/components/admin/ModerationActions";
 
 export default async function AdminForumModerationPage() {
-  const supabase = await createClient();
+  const auth = await checkAdminAuth();
+  if (!auth.ok) {
+    redirect(auth.reason === "unauthenticated" ? "/login" : "/");
+  }
+  const supabase = auth.supabase;
   const { data: pendingPosts } = await supabase
     .from("forum_posts")
     .select("id, title, status, created_at, guest_name")

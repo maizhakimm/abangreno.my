@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { checkAdminAuth } from "@/lib/auth/admin";
+import { safeJsonBody } from "@/lib/utils/safeJson";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const decisionSchema = z.object({
@@ -21,27 +22,23 @@ const decisionSchema = z.object({
  * alter Vendor B's status: the function raises VERIFICATION_VENDOR_MISMATCH
  * if the ids don't correspond, and the whole transaction rolls back.
  *
- * §20 (carried over) — this route independently re-verifies admin
- * authorization before calling the RPC; the RPC itself also re-checks
- * is_admin()/service_role as a second, independent layer.
+ * This route independently re-verifies admin authorization (via the shared
+ * checkAdminAuth() helper) before calling the RPC; the RPC itself also
+ * re-checks is_admin()/service_role as a second, independent layer.
  */
 export async function POST(req: NextRequest) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Sila log masuk" }, { status: 401 });
+  const auth = await checkAdminAuth();
+  if (!auth.ok) {
+    return NextResponse.json(
+      { error: "Tidak dibenarkan" },
+      { status: auth.reason === "unauthenticated" ? 401 : 403 }
+    );
   }
 
-  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
-  if (profile?.role !== "admin") {
-    return NextResponse.json({ error: "Tidak dibenarkan" }, { status: 403 });
-  }
+  const parsedBody = await safeJsonBody(req);
+  if ("errorResponse" in parsedBody) return parsedBody.errorResponse;
 
-  const body = await req.json();
-  const parsed = decisionSchema.safeParse(body);
+  const parsed = decisionSchema.safeParse(parsedBody.data);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
@@ -51,7 +48,7 @@ export async function POST(req: NextRequest) {
     p_verification_id: parsed.data.verification_id,
     p_vendor_id: parsed.data.vendor_id,
     p_decision: parsed.data.decision,
-    p_admin_id: user.id,
+    p_admin_id: auth.user.id,
     p_admin_notes: parsed.data.admin_notes ?? null,
   });
 
