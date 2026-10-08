@@ -6,6 +6,8 @@ import {
   galleryIsPlaceholder,
   whatsappLink,
 } from "./site";
+import { HeroContent } from "./hero-content";
+import { WhatsAppIcon } from "./whatsapp-icon";
 
 const heroImageAlt = "Pasukan Abang Reno beruniform bersama van servis";
 const { props: heroDesktop } = getImageProps({ src: "/hero-team-desktop.webp", alt: heroImageAlt, width: 1672, height: 941, quality: 80, priority: true });
@@ -87,14 +89,6 @@ const reasons = [
     text: "Perabot dilindungi semasa kerja dan tapak dibersihkan selepas siap.",
   },
 ];
-
-function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 32 32" className={className} fill="currentColor">
-      <path d="M16.02 3.2C9.28 3.2 3.8 8.55 3.8 15.12c0 2.23.64 4.4 1.86 6.28L3.4 28.8l7.65-2.16a12.63 12.63 0 0 0 4.97.99c6.74 0 12.22-5.35 12.22-11.93S22.76 3.2 16.02 3.2Zm0 22.28c-1.58 0-3.12-.4-4.5-1.14l-.32-.17-4.53 1.28 1.33-4.33-.2-.34a10.15 10.15 0 0 1-1.58-5.37c0-5.38 4.4-9.76 9.8-9.76s9.8 4.38 9.8 9.76-4.4 10.07-9.8 10.07Zm5.39-7.32c-.3-.15-1.76-.86-2.03-.96-.27-.1-.47-.15-.66.15-.2.29-.76.95-.93 1.14-.17.2-.34.22-.64.08-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.48-1.75-1.65-2.04-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.51.15-.17.2-.3.3-.49.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.91-2.18-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.36-.27.3-1.04 1-1.04 2.45s1.07 2.85 1.21 3.05c.15.2 2.1 3.15 5.1 4.41.71.31 1.27.5 1.7.64.71.22 1.36.19 1.88.12.57-.08 1.76-.7 2.01-1.38.25-.68.25-1.27.17-1.39-.07-.12-.27-.19-.56-.34Z" />
-    </svg>
-  );
-}
 
 function CheckIcon() {
   return (
@@ -205,43 +199,39 @@ export default function Home() {
 
       <main id="utama" className="overflow-hidden">
         {/* Hero */}
-        <section className="relative isolate flex min-h-[calc(100svh-4rem)] flex-col bg-neutral-950 text-white sm:min-h-[calc(100svh-5rem)] lg:min-h-[640px] lg:justify-center">
-          <picture>
-            <source media="(min-width: 1024px)" srcSet={heroDesktop.srcSet} sizes="100vw" />
-            <img {...heroMobile} alt={heroImageAlt} className="absolute inset-0 -z-20 h-full w-full object-cover object-bottom lg:object-[70%_center]" />
-          </picture>
-          {/* Keeps text readable: dark sky on mobile, dark left side on desktop. */}
-          <div className="absolute inset-0 -z-10 bg-gradient-to-b from-neutral-950/85 via-neutral-950/45 via-40% to-transparent to-60% lg:bg-gradient-to-r lg:from-neutral-950/90 lg:via-neutral-950/55 lg:via-50% lg:to-transparent lg:to-100%" />
+        <section className="relative isolate flex flex-col overflow-hidden bg-neutral-950 text-white lg:min-h-[680px] lg:justify-center">
+          <HeroContent />
 
-          <div className="section-shell pb-10 pt-8 sm:pt-12 lg:py-20">
-            <div className="max-w-xl">
-              <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-orange-300 ring-1 ring-white/20 backdrop-blur sm:text-sm">
-                <span className="h-2 w-2 rounded-full bg-orange-400" />
-                Seluruh Klang Valley
-              </p>
-              <h1 className="text-[2.15rem] font-black leading-[1.05] tracking-[-0.03em] sm:text-6xl">
-                Lantai Epoxy & Baiki <span className="text-orange-400">Dinding Retak / Bocor</span>
-              </h1>
-              <p className="mt-5 text-base leading-7 text-white/85 sm:text-lg sm:leading-8">
-                Kami datang periksa secara <strong className="text-white">PERCUMA</strong>, terangkan puncanya dan beri quotation bertulis
-                sebelum sebarang kerja dimulakan.
-              </p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <WhatsAppButton>Tempah Inspection Percuma</WhatsAppButton>
-                <a
-                  href="#servis"
-                  className="hidden min-h-12 items-center justify-center rounded-full bg-white/10 px-6 sm:inline-flex text-sm font-extrabold text-white ring-1 ring-white/30 backdrop-blur transition hover:bg-white/20 sm:text-base"
-                >
-                  Lihat Servis Kami
-                </a>
-              </div>
-              <ul className="mt-7 hidden flex-wrap gap-x-5 gap-y-2 text-sm font-bold text-white/85 sm:flex">
-                <li>✓ Site inspection percuma</li>
-                <li>✓ Quotation bertulis</li>
-                <li>✓ Berdaftar SSM</li>
-              </ul>
-            </div>
+          {/* Mobile/tablet: photo sits below the text. Desktop: full-bleed background. */}
+          <div className="relative -z-20 -mt-20 overflow-hidden sm:-mt-28 lg:absolute lg:inset-0 lg:mt-0">
+            <picture>
+              <source media="(min-width: 1024px)" srcSet={heroDesktop.srcSet} sizes="100vw" />
+              <img
+                {...heroMobile}
+                alt={heroImageAlt}
+                className="hero-kenburns aspect-[941/1000] w-full object-cover object-bottom sm:aspect-[941/820] lg:aspect-auto lg:h-full lg:object-[70%_center]"
+              />
+            </picture>
+            <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-neutral-950/30 via-30% to-transparent to-50% lg:hidden" />
           </div>
+          {/* Keeps desktop text readable over the photo. */}
+          <div className="absolute inset-0 -z-10 hidden bg-gradient-to-r from-neutral-950/90 via-neutral-950/55 via-50% to-transparent lg:block" />
+
+          {/* Desktop-only glass card over the photo */}
+          <div className="hero-rise absolute bottom-28 right-8 hidden rounded-2xl bg-white/10 p-5 text-sm font-bold text-white ring-1 ring-white/25 backdrop-blur-md [animation-delay:700ms] xl:block">
+            <p className="text-xs font-black uppercase tracking-[0.15em] text-orange-300">Jaminan Kami</p>
+            <ul className="mt-3 grid gap-2">
+              <li>✓ Site inspection percuma</li>
+              <li>✓ Harga bertulis, tiada kejutan</li>
+              <li>✓ Syarikat berdaftar SSM</li>
+            </ul>
+          </div>
+
+          <a href="#servis" aria-label="Skrol ke bawah" className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 text-white/70 transition hover:text-white lg:block">
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="h-8 w-8 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
         </section>
 
         {/* Trust strip */}
