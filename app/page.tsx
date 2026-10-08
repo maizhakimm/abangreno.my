@@ -1,147 +1,192 @@
 import Image from "next/image";
-
-const whatsappLink =
-  "https://wa.me/601151317030?text=Hi%20Abang%20Reno!%0A%0AService%20Required:%20__________%0ALocation:%20__________%0APlease%20provide%20a%20quotation.%20Thank%20you.";
+import {
+  BUSINESS,
+  SERVICE_AREAS,
+  faqs,
+  galleryIsPlaceholder,
+  phoneDisplay,
+  whatsappLink,
+} from "./site";
 
 const navLinks = [
-  { label: "Utama", href: "#home" },
-  { label: "Perkhidmatan", href: "#services" },
-  { label: "Sebelum & Selepas", href: "#projects" },
-  { label: "Testimoni", href: "#testimonials" },
+  { label: "Servis", href: "#servis" },
+  { label: "Proses", href: "#proses" },
+  { label: "Hasil Kerja", href: "#projek" },
+  { label: "Kawasan", href: "#kawasan" },
   { label: "Soalan Lazim", href: "#faq" },
-  { label: "Hubungi", href: "#contact" },
+];
+
+const trustPoints = [
+  { title: "Site Inspection PERCUMA", text: "Kami datang periksa dulu, tiada caj." },
+  { title: "Quotation Bertulis", text: "Harga jelas sebelum kerja bermula." },
+  { title: "Syarikat Berdaftar SSM", text: `${BUSINESS.company} (${BUSINESS.ssm})` },
+  { title: "Seluruh Klang Valley", text: "KL, Selangor & Putrajaya." },
 ];
 
 const services = [
   {
-    title: "Waterproofing",
-    image: "/water-proofing.png",
-    description: "Pembaikan kebocoran bumbung, siling dan dinding basah dengan sistem kalis air yang tahan lama.",
+    id: "epoxy",
+    title: "Lantai Epoxy",
+    image: "/epoxy.webp",
+    imageAlt: "Pekerja Abang Reno menyapu salutan epoxy pada lantai bilik air",
+    intro:
+      "Lantai licin berkilat yang kalis air, tahan kotoran dan mudah dibersihkan. Sesuai untuk rumah, kedai dan ruang kerja.",
+    suitable: ["Garaj & porch kereta", "Bilik air & dapur", "Stor, bengkel & kedai", "Lantai simen yang berdebu atau retak halus"],
+    message: "Lantai Epoxy",
+    cta: "Tanya Harga Epoxy",
   },
   {
-    title: "Baiki Dinding Retak",
-    image: "/wall-crack.png",
-    description: "Rawatan retak dalaman dan luaran dengan kemasan kemas dan tahan cuaca.",
-  },
-  {
-    title: "Painting Service",
-    image: "/painting.png",
-    description: "Mengecat dalaman dan luaran untuk menaikkan seri rumah dan melindungi permukaan.",
-  },
-  {
-    title: "Pemasangan Cermin",
-    image: "/window-installation.png",
-    description: "Pemasangan cermin mengikut ukuran untuk ruang tamu, bilik mandi dan pejabat.",
-  },
-  {
-    title: "Epoxy Coating",
-    image: "/epoxy.png",
-    description: "Salutan epoxy berkualiti untuk dapur, garaj dan kawasan basah yang lebih mudah dibersihkan.",
+    id: "dinding",
+    title: "Baiki Dinding Retak & Bocor",
+    image: "/wall-crack.webp",
+    imageAlt: "Pekerja Abang Reno membaiki retakan pada dinding rumah",
+    intro:
+      "Kami cari punca air masuk, baiki retakan dan pasang lapisan kalis air supaya masalah tidak berulang selepas dicat semula.",
+    suitable: [
+      "Dinding retak rambut atau retak besar",
+      "Air meresap masuk bila hujan",
+      "Dinding lembap, cat menggelembung & berkulat",
+      "Kalis air dinding luar & parapet",
+    ],
+    message: "Baiki Dinding Retak / Bocor",
+    cta: "Tanya Harga Baiki Dinding",
   },
 ];
 
-const stats = [
-  "500+ Projek Disiapkan",
-  "24 Jam Respon WhatsApp",
-  "Servis Seluruh Klang Valley",
-  "Quotation Sebelum Kerja",
+const steps = [
+  { title: "WhatsApp Gambar", text: "Hantar gambar masalah dan lokasi rumah anda. Kami beri pandangan awal." },
+  { title: "Site Inspection Percuma", text: "Kami datang ke rumah untuk ukur, periksa punca dan cadangkan kaedah terbaik." },
+  { title: "Quotation Bertulis", text: "Anda terima quotation dengan skop kerja dan harga yang jelas. Tiada caj tersembunyi." },
+  { title: "Kerja Siap & Kemas", text: "Kerja dijalankan mengikut jadual. Tapak dibersihkan sebelum kami serahkan." },
 ];
 
-const beforeAfterImages = [
-  { src: "/before-after-water-proofing.png", alt: "Sebelum dan selepas waterproofing" },
-  { src: "/before-after-wall-crack.png", alt: "Sebelum dan selepas baiki dinding retak" },
-  { src: "/before-after-painting.png", alt: "Sebelum dan selepas painting" },
-  { src: "/before-after-epoxy.png", alt: "Sebelum dan selepas epoxy" },
+const gallery = [
+  { src: "/before-after-epoxy.webp", alt: "Sebelum dan selepas lantai epoxy bilik air", caption: "Lantai epoxy bilik air" },
+  { src: "/before-after-wall-crack.webp", alt: "Sebelum dan selepas baiki dinding retak", caption: "Baiki dinding retak" },
+  { src: "/before-after-water-proofing.webp", alt: "Sebelum dan selepas kalis air", caption: "Kalis air bumbung rata" },
 ];
 
-const testimonials = [
+const reasons = [
   {
-    name: "Razak",
-    image: "/testimoni-01-razak.png",
-    quote: "Kerja pantas dan kemas. Sangat berpuas hati dengan hasil Abang Reno.",
+    title: "Pemilik sendiri turun ke tapak",
+    text: "Anda berurusan terus dengan orang yang buat kerja. Tiada orang tengah, tiada salah faham.",
   },
   {
-    name: "Ayu",
-    image: "/testimoni-02-Ayu.png",
-    quote: "Quotation jelas sebelum kerja. Pasukan mesra dan sangat profesional.",
+    title: "Penyediaan permukaan yang betul",
+    text: "Epoxy tertanggal dan dinding bocor semula selalunya berpunca daripada penyediaan yang tidak betul. Kami tidak potong langkah ini.",
   },
   {
-    name: "Khalid",
-    image: "/testimoni-03-khalid.png",
-    quote: "Kebocoran diselesaikan dengan cepat. Cadangan mereka sangat membantu.",
+    title: "Nasihat jujur",
+    text: "Kalau masalah anda boleh selesai dengan cara yang lebih murah, kami akan beritahu.",
+  },
+  {
+    title: "Bersih & kemas",
+    text: "Perabot dilindungi semasa kerja dan tapak dibersihkan selepas siap.",
   },
 ];
 
-function CtaButton({ children, variant = "primary" }: { children: React.ReactNode; variant?: "primary" | "dark" | "light" }) {
+function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 32 32" className={className} fill="currentColor">
+      <path d="M16.02 3.2C9.28 3.2 3.8 8.55 3.8 15.12c0 2.23.64 4.4 1.86 6.28L3.4 28.8l7.65-2.16a12.63 12.63 0 0 0 4.97.99c6.74 0 12.22-5.35 12.22-11.93S22.76 3.2 16.02 3.2Zm0 22.28c-1.58 0-3.12-.4-4.5-1.14l-.32-.17-4.53 1.28 1.33-4.33-.2-.34a10.15 10.15 0 0 1-1.58-5.37c0-5.38 4.4-9.76 9.8-9.76s9.8 4.38 9.8 9.76-4.4 10.07-9.8 10.07Zm5.39-7.32c-.3-.15-1.76-.86-2.03-.96-.27-.1-.47-.15-.66.15-.2.29-.76.95-.93 1.14-.17.2-.34.22-.64.08-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.48-1.75-1.65-2.04-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.51.15-.17.2-.3.3-.49.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.91-2.18-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.36-.27.3-1.04 1-1.04 2.45s1.07 2.85 1.21 3.05c.15.2 2.1 3.15 5.1 4.41.71.31 1.27.5 1.7.64.71.22 1.36.19 1.88.12.57-.08 1.76-.7 2.01-1.38.25-.68.25-1.27.17-1.39-.07-.12-.27-.19-.56-.34Z" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 20 20" className="mt-0.5 h-5 w-5 flex-none text-orange-600" fill="currentColor">
+      <path
+        fillRule="evenodd"
+        d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.86-9.86a.75.75 0 0 0-1.22-.88l-3.24 4.5-1.6-1.6a.75.75 0 1 0-1.06 1.06l2.22 2.22a.75.75 0 0 0 1.14-.09l3.76-5.21Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function WhatsAppButton({
+  children,
+  service,
+  variant = "primary",
+  className = "",
+}: {
+  children: React.ReactNode;
+  service?: string;
+  variant?: "primary" | "dark" | "whatsapp";
+  className?: string;
+}) {
   const variants = {
     primary: "bg-orange-600 text-white shadow-lg shadow-orange-600/25 hover:bg-orange-700",
     dark: "bg-neutral-950 text-white shadow-lg shadow-neutral-950/20 hover:bg-neutral-800",
-    light: "bg-white text-neutral-950 ring-1 ring-neutral-200 hover:bg-orange-50",
+    whatsapp: "bg-[#1fa855] text-white shadow-lg shadow-green-700/25 hover:bg-[#178a45]",
   };
 
   return (
-    <a href={whatsappLink} aria-label={`${children} on WhatsApp`} className={`inline-flex min-h-12 items-center justify-center rounded-full px-5 text-sm font-extrabold transition ${variants[variant]}`}>
+    <a
+      href={whatsappLink(service)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-extrabold transition sm:text-base ${variants[variant]} ${className}`}
+    >
+      <WhatsAppIcon />
       {children}
     </a>
   );
 }
 
-function SectionHeader({ eyebrow, title, subtitle, tone = "light" }: { eyebrow?: string; title: string; subtitle?: string; tone?: "light" | "dark" }) {
-  const titleClass = tone === "dark" ? "text-white" : "text-neutral-950";
-  const subtitleClass = tone === "dark" ? "text-white/70" : "text-neutral-600";
-
+function SectionHeader({ eyebrow, title, subtitle, tone = "light" }: { eyebrow: string; title: string; subtitle?: string; tone?: "light" | "dark" }) {
   return (
-    <div className="mx-auto mb-9 max-w-2xl text-center">
-      {eyebrow ? <p className="mb-3 text-sm font-black uppercase tracking-[0.24em] text-orange-600">{eyebrow}</p> : null}
-      <h2 className={`text-3xl font-black tracking-tight sm:text-4xl ${titleClass}`}>{title}</h2>
-      {subtitle ? <p className={`mt-4 text-base leading-7 ${subtitleClass}`}>{subtitle}</p> : null}
+    <div className="mx-auto mb-10 max-w-2xl text-center">
+      <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-orange-600">{eyebrow}</p>
+      <h2 className={`text-3xl font-black tracking-tight sm:text-4xl ${tone === "dark" ? "text-white" : "text-neutral-950"}`}>{title}</h2>
+      {subtitle ? <p className={`mt-4 text-base leading-7 ${tone === "dark" ? "text-white/70" : "text-neutral-600"}`}>{subtitle}</p> : null}
     </div>
   );
 }
 
-function ServiceCard({ title, description, image }: { title: string; description: string; image: string }) {
-  return (
-    <article className="overflow-hidden rounded-[2rem] bg-white shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition hover:-translate-y-1">
-      <div className="relative h-56 w-full">
-        <Image src={image} alt={title} fill className="object-cover" />
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-black text-neutral-950">{title}</h3>
-        <p className="mt-3 text-neutral-600">{description}</p>
-      </div>
-    </article>
-  );
-}
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  name: BUSINESS.name,
+  legalName: BUSINESS.company,
+  url: BUSINESS.url,
+  logo: `${BUSINESS.url}/logo.webp`,
+  image: `${BUSINESS.url}/og-image.jpg`,
+  telephone: BUSINESS.phoneE164,
+  description: BUSINESS.description,
+  areaServed: SERVICE_AREAS.map((name) => ({ "@type": "City", name })),
+  address: { "@type": "PostalAddress", addressRegion: "Selangor", addressCountry: "MY" },
+  makesOffer: services.map((service) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: service.title } })),
+};
 
-function TestimonialCard({ name, image, quote }: { name: string; image: string; quote: string }) {
-  return (
-    <div className="rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-      <div className="flex items-center gap-4">
-        <Image src={image} alt={name} width={64} height={64} className="rounded-full" />
-        <div>
-          <p className="font-black text-neutral-950">{name}</p>
-          <p className="text-sm text-neutral-500">Pelanggan</p>
-        </div>
-      </div>
-      <p className="mt-5 text-neutral-700">{quote}</p>
-    </div>
-  );
-}
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: { "@type": "Answer", text: faq.a },
+  })),
+};
 
 export default function Home() {
   return (
-    <main id="home" className="min-h-screen overflow-hidden bg-[#fffaf5]">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+
       <header className="sticky top-0 z-50 border-b border-black/5 bg-white/90 backdrop-blur-xl">
-        <div className="section-shell flex min-h-20 items-center justify-between gap-4 py-3">
-          <a href="#home" className="flex items-center gap-3" aria-label="Abang Reno home">
-            <Image src="/abang-reno-logo.svg" width={58} height={58} alt="Abang Reno logo" priority className="rounded-full" />
+        <div className="section-shell flex min-h-16 items-center justify-between gap-4 py-2 sm:min-h-20">
+          <a href="#utama" className="flex items-center gap-3" aria-label="Abang Reno, ke atas">
+            <Image src="/logo.webp" width={52} height={52} alt="" priority className="h-11 w-11 sm:h-13 sm:w-13" />
             <div className="leading-tight">
               <p className="text-lg font-black text-neutral-950">Abang Reno</p>
-              <p className="text-xs font-bold text-neutral-500">Waterproofing · Baiki Dinding Retak · Painting · Cermin · Epoxy</p>
+              <p className="hidden text-xs font-bold text-neutral-500 sm:block">Epoxy · Dinding Retak & Bocor</p>
             </div>
           </a>
 
-          <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary navigation">
+          <nav className="hidden items-center gap-7 lg:flex" aria-label="Navigasi utama">
             {navLinks.map((link) => (
               <a key={link.href} href={link.href} className="text-sm font-bold text-neutral-700 transition hover:text-orange-600">
                 {link.label}
@@ -149,175 +194,253 @@ export default function Home() {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-3 lg:flex">
-            <CtaButton>WhatsApp Untuk Quotation</CtaButton>
-            <CtaButton variant="dark">Hantar Gambar Masalah Rumah</CtaButton>
-          </div>
-
-          <details className="group lg:hidden">
-            <summary className="flex h-12 w-12 cursor-pointer list-none items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-950" aria-label="Open mobile menu">
-              <span className="relative h-4 w-5 before:absolute before:left-0 before:top-0 before:h-0.5 before:w-5 before:bg-current after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-5 after:bg-current">
-                <span className="absolute left-0 top-[7px] h-0.5 w-5 bg-current" />
-              </span>
-            </summary>
-            <div className="absolute left-4 right-4 top-[76px] rounded-[1.5rem] border border-neutral-100 bg-white p-4 shadow-2xl">
-              <div className="grid gap-1">
-                {navLinks.map((link) => (
-                  <a key={link.href} href={link.href} className="rounded-2xl px-4 py-3 text-sm font-bold text-neutral-800 hover:bg-orange-50">
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-              <div className="mt-4 grid gap-3">
-                <CtaButton>WhatsApp Untuk Quotation</CtaButton>
-                <CtaButton variant="dark">Hantar Gambar Masalah Rumah</CtaButton>
-              </div>
-            </div>
-          </details>
+          <WhatsAppButton variant="whatsapp" className="min-h-11 px-4 text-sm sm:px-5">
+            <span className="sm:hidden">WhatsApp</span>
+            <span className="hidden sm:inline">{phoneDisplay}</span>
+          </WhatsAppButton>
         </div>
       </header>
 
-      <section className="hero-grid-bg relative pb-16 pt-10 sm:pb-24 lg:pt-16">
-        <div className="section-shell grid items-center gap-10 lg:grid-cols-[.95fr_1.05fr]">
-          <div>
-            <p className="mb-4 inline-flex rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-orange-600 shadow-sm ring-1 ring-orange-100">
-              Servis profesional sekitar Klang Valley
-            </p>
-            <h1 className="max-w-3xl text-4xl font-black tracking-[-0.05em] text-neutral-950 sm:text-6xl lg:text-7xl">
-              Rumah Ada Masalah Bocor, Dinding Retak atau Cat Mengelupas?
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-600 sm:text-xl">
-              Abang Reno menyediakan servis waterproofing, baiki dinding retak, painting, epoxy coating dan pemasangan cermin sekitar Klang Valley dengan quotation yang jelas sebelum kerja bermula.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <CtaButton>WhatsApp Untuk Quotation</CtaButton>
-              <CtaButton variant="light">Hantar Gambar Masalah Rumah</CtaButton>
+      <main id="utama" className="overflow-hidden">
+        {/* Hero */}
+        <section className="hero-grid-bg relative pb-14 pt-8 sm:pb-20 lg:pt-14">
+          <div className="section-shell grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
+            <div>
+              <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-orange-600 px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-white shadow-md shadow-orange-600/25 sm:text-sm">
+                ✓ Site Inspection PERCUMA · Klang Valley
+              </p>
+              <h1 className="text-4xl font-black leading-[1.05] tracking-[-0.04em] text-neutral-950 sm:text-6xl">
+                Lantai Epoxy & Baiki <span className="text-orange-600">Dinding Retak / Bocor</span>
+              </h1>
+              <p className="mt-6 max-w-xl text-lg leading-8 text-neutral-600">
+                Lantai kusam, dinding retak atau air meresap bila hujan? Kami datang periksa secara percuma, terangkan puncanya dan beri
+                quotation bertulis sebelum sebarang kerja dimulakan.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <WhatsAppButton>Tempah Inspection Percuma</WhatsAppButton>
+                <a
+                  href="#projek"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-6 text-sm font-extrabold text-neutral-950 ring-1 ring-neutral-200 transition hover:bg-orange-50 sm:text-base"
+                >
+                  Lihat Hasil Kerja
+                </a>
+              </div>
+              <p className="mt-4 text-sm text-neutral-500">
+                Atau hubungi terus: <a href={whatsappLink()} className="font-bold text-neutral-800 underline decoration-orange-400 underline-offset-4">{phoneDisplay}</a>
+              </p>
             </div>
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {stats.map((label) => (
-                <div key={label} className="rounded-2xl bg-white p-4 text-sm font-extrabold text-neutral-800 shadow-sm ring-1 ring-black/5">
-                  <span className="mb-2 block text-orange-600">✓</span>
-                  {label}
+
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-[3rem] bg-orange-500/15 blur-3xl" />
+              <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-[0_40px_80px_rgba(255,138,51,0.18)]">
+                <Image
+                  src="/water-proofing.webp"
+                  width={1600}
+                  height={900}
+                  alt="Pekerja Abang Reno menyapu lapisan kalis air"
+                  priority
+                  sizes="(min-width: 1024px) 520px, 100vw"
+                  className="aspect-[4/3] w-full object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-5 left-4 right-4 flex items-center gap-3 rounded-2xl bg-white p-4 shadow-xl ring-1 ring-black/5 sm:left-auto sm:right-6 sm:max-w-xs">
+                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-orange-100 text-xl">🏠</span>
+                <p className="text-sm font-bold leading-snug text-neutral-800">Kami datang ke rumah anda untuk periksa, tanpa sebarang caj.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Trust strip */}
+        <section aria-label="Kenapa boleh percaya" className="border-y border-black/5 bg-white">
+          <div className="section-shell grid grid-cols-2 gap-x-4 gap-y-6 py-8 lg:grid-cols-4">
+            {trustPoints.map((point) => (
+              <div key={point.title} className="flex gap-3">
+                <CheckIcon />
+                <div>
+                  <p className="font-black text-neutral-950">{point.title}</p>
+                  <p className="mt-1 text-sm text-neutral-600">{point.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Services */}
+        <section id="servis" className="section-shell py-16 sm:py-24">
+          <SectionHeader eyebrow="Servis Kami" title="Dua Servis, Fokus Sepenuhnya" subtitle="Kami pilih untuk pakar dalam dua jenis kerja supaya setiap projek disiapkan dengan betul." />
+          <div className="grid gap-8 lg:grid-cols-2">
+            {services.map((service) => (
+              <article key={service.id} id={service.id} className="flex flex-col overflow-hidden rounded-[2rem] bg-white card-shadow">
+                <div className="relative aspect-[16/9] w-full">
+                  <Image src={service.image} alt={service.imageAlt} fill sizes="(min-width: 1024px) 544px, 100vw" className="object-cover" />
+                </div>
+                <div className="flex flex-1 flex-col p-6 sm:p-8">
+                  <h3 className="text-2xl font-black text-neutral-950">{service.title}</h3>
+                  <p className="mt-3 leading-7 text-neutral-600">{service.intro}</p>
+                  <p className="mt-6 text-sm font-black uppercase tracking-[0.15em] text-neutral-500">Sesuai untuk</p>
+                  <ul className="mt-3 grid gap-2">
+                    {service.suitable.map((item) => (
+                      <li key={item} className="flex gap-2 text-neutral-800">
+                        <CheckIcon />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-8 flex flex-1 items-end">
+                    <WhatsAppButton service={service.message} className="w-full sm:w-auto">
+                      {service.cta}
+                    </WhatsAppButton>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* Process */}
+        <section id="proses" className="bg-neutral-950 py-16 sm:py-24">
+          <div className="section-shell">
+            <SectionHeader tone="dark" eyebrow="Cara Kami Bekerja" title="4 Langkah Mudah" subtitle="Proses yang telus dari mula hingga siap." />
+            <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {steps.map((step, index) => (
+                <li key={step.title} className="rounded-[1.5rem] bg-white/5 p-6 ring-1 ring-white/10">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-600 text-lg font-black text-white">{index + 1}</span>
+                  <h3 className="mt-5 text-lg font-black text-white">{step.title}</h3>
+                  <p className="mt-2 leading-7 text-white/70">{step.text}</p>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-10 text-center">
+              <WhatsAppButton>Mula Dengan Langkah 1</WhatsAppButton>
+            </div>
+          </div>
+        </section>
+
+        {/* Gallery */}
+        <section id="projek" className="section-shell py-16 sm:py-24">
+          <SectionHeader eyebrow="Hasil Kerja" title="Sebelum & Selepas" subtitle="Perbezaan yang anda boleh lihat dan rasa." />
+          <div className="grid gap-6 md:grid-cols-3">
+            {gallery.map((item) => (
+              <figure key={item.src} className="overflow-hidden rounded-[1.75rem] bg-white card-shadow">
+                <Image src={item.src} alt={item.alt} width={1536} height={1024} sizes="(min-width: 768px) 360px, 100vw" className="aspect-[3/2] w-full object-cover" />
+                <figcaption className="px-5 py-4 font-bold text-neutral-800">{item.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+          {galleryIsPlaceholder ? <p className="mt-5 text-center text-xs text-neutral-500">* Gambar ilustrasi. Gambar projek sebenar akan dikemas kini.</p> : null}
+        </section>
+
+        {/* Why us */}
+        <section className="bg-white py-16 sm:py-24">
+          <div className="section-shell">
+            <SectionHeader eyebrow="Kenapa Abang Reno" title="Kerja Yang Dibuat Dengan Betul" />
+            <div className="grid gap-5 sm:grid-cols-2">
+              {reasons.map((reason) => (
+                <div key={reason.title} className="rounded-[1.5rem] bg-[#fffaf5] p-6 ring-1 ring-orange-100">
+                  <h3 className="text-lg font-black text-neutral-950">{reason.title}</h3>
+                  <p className="mt-2 leading-7 text-neutral-600">{reason.text}</p>
                 </div>
               ))}
             </div>
           </div>
+        </section>
 
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-[3rem] bg-orange-500/15 blur-3xl" />
-            <Image src="/team-van.svg" width={1200} height={820} alt="Abang Reno team with branded van" priority className="relative rounded-[2rem] border border-white bg-white shadow-[0_40px_80px_rgba(255,138,51,0.15)]" />
-          </div>
-        </div>
-      </section>
+        {/* Service areas */}
+        <section id="kawasan" className="section-shell py-16 sm:py-24">
+          <SectionHeader eyebrow="Kawasan Servis" title="Kami Cover Seluruh Klang Valley" subtitle="Site inspection percuma untuk semua kawasan di bawah. Kawasan anda tiada dalam senarai? WhatsApp kami untuk semak." />
+          <ul className="mx-auto flex max-w-4xl flex-wrap justify-center gap-3">
+            {SERVICE_AREAS.map((area) => (
+              <li key={area} className="rounded-full bg-white px-4 py-2 text-sm font-bold text-neutral-800 shadow-sm ring-1 ring-black/5">
+                📍 {area}
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      <section id="services" className="section-shell py-16 sm:py-24">
-        <SectionHeader eyebrow="Perkhidmatan" title="Perkhidmatan Utama" subtitle="Pilih servis yang sesuai untuk masalah rumah anda." />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
-            <ServiceCard key={service.title} title={service.title} description={service.description} image={service.image} />
-          ))}
-        </div>
-      </section>
-
-      <section id="projects" className="section-shell py-16 sm:py-24">
-        <SectionHeader eyebrow="Sebelum & Selepas" title="Sebelum & Selepas" subtitle="Lihat perubahan nyata selepas kerja Abang Reno." />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {beforeAfterImages.map((item) => (
-            <div key={item.src} className="overflow-hidden rounded-[2rem] bg-white shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
-              <Image src={item.src} alt={item.alt} width={600} height={440} className="h-full w-full object-cover" />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="testimonials" className="section-shell py-16 sm:py-24">
-        <SectionHeader eyebrow="Testimoni" title="Apa Kata Pelanggan" subtitle="Pelanggan kami berkongsi pengalaman mereka." />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((item) => (
-            <TestimonialCard key={item.name} name={item.name} image={item.image} quote={item.quote} />
-          ))}
-        </div>
-      </section>
-
-      <section id="faq" className="section-shell py-16 sm:py-24">
-        <SectionHeader eyebrow="Soalan Lazim" title="Soalan Lazim" subtitle="Jawapan ringkas untuk persoalan biasa." />
-        <div className="mx-auto grid max-w-3xl gap-3">
-          <details className="group rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-black text-neutral-950">
-              Apakah itu waterproofing?
-              <span className="text-orange-600 transition group-open:rotate-45">+</span>
-            </summary>
-            <p className="mt-4 leading-7 text-neutral-600">Waterproofing membantu menghentikan kebocoran dan kelembapan pada bumbung, siling dan dinding basah.</p>
-          </details>
-          <details className="group rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-black text-neutral-950">
-              Adakah quotation diberikan sebelum kerja bermula?
-              <span className="text-orange-600 transition group-open:rotate-45">+</span>
-            </summary>
-            <p className="mt-4 leading-7 text-neutral-600">Ya, quotation jelas akan diberikan sebelum kami mula kerja.</p>
-          </details>
-          <details className="group rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-black text-neutral-950">
-              Bolehkah saya hantar gambar melalui WhatsApp?
-              <span className="text-orange-600 transition group-open:rotate-45">+</span>
-            </summary>
-            <p className="mt-4 leading-7 text-neutral-600">Ya, hantar gambar masalah rumah untuk semakan awal dan panduan quotation.</p>
-          </details>
-        </div>
-      </section>
-
-      <section id="contact" className="section-shell py-16 sm:py-24">
-        <div className="rounded-[2.5rem] bg-orange-500/10 p-8 shadow-[0_40px_80px_rgba(255,138,51,0.15)] sm:p-12">
-          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-            <div>
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.24em] text-orange-600">Sedia untuk mula?</p>
-              <h2 className="text-3xl font-black tracking-tight text-neutral-950 sm:text-5xl">Hubungi Kami untuk Quotation</h2>
-              <p className="mt-5 text-lg leading-8 text-neutral-700">Hantar lokasi dan gambar masalah rumah melalui WhatsApp kami. Kami akan bantu anda dengan cepat dan jelas.</p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <CtaButton>WhatsApp Untuk Quotation</CtaButton>
-              <CtaButton variant="dark">Hantar Gambar Masalah Rumah</CtaButton>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <footer className="bg-neutral-950 pb-20 pt-14 text-white sm:pb-16">
-        <div className="section-shell grid gap-10 md:grid-cols-[1.5fr_1fr_1fr]">
-          <div>
-            <Image src="/abang-reno-logo.svg" width={72} height={72} alt="Abang Reno logo" className="rounded-full bg-white" />
-            <h2 className="mt-4 text-2xl font-black">Abang Reno</h2>
-            <p className="mt-2 text-white/70">Waterproofing · Painting · Baiki Dinding Retak · Cermin · Epoxy</p>
-            <div className="mt-5 space-y-2 text-sm text-white/70">
-              <p>WhatsApp: +601151317030</p>
-              <p>Website: abangreno.my</p>
-              <p>Servis: Klang Valley</p>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-lg font-black">Syarikat</h3>
-            <p className="mt-4 text-white/70">Neugens Solution</p>
-            <p className="mt-2 text-white/70">Reg. No. : 202503301282 (AS0504872-V)</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-black">Pautan Pantas</h3>
-            <div className="mt-4 grid gap-2 text-white/70">
-              {navLinks.slice(1).map((link) => (
-                <a key={link.href} href={link.href} className="hover:text-orange-400">
-                  {link.label}
-                </a>
+        {/* FAQ */}
+        <section id="faq" className="bg-white py-16 sm:py-24">
+          <div className="section-shell">
+            <SectionHeader eyebrow="Soalan Lazim" title="Soalan Yang Selalu Ditanya" />
+            <div className="mx-auto grid max-w-3xl gap-3">
+              {faqs.map((faq) => (
+                <details key={faq.q} className="group rounded-[1.5rem] bg-[#fffaf5] p-5 ring-1 ring-orange-100 sm:p-6">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-base font-black text-neutral-950 sm:text-lg">
+                    {faq.q}
+                    <span aria-hidden="true" className="text-2xl leading-none text-orange-600 transition group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-4 leading-7 text-neutral-600">{faq.a}</p>
+                </details>
               ))}
             </div>
           </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="section-shell py-16 sm:py-24">
+          <div className="orange-gradient rounded-[2.5rem] p-8 text-white shadow-[0_40px_80px_rgba(255,90,0,0.25)] sm:p-12">
+            <div className="grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
+              <div>
+                <h2 className="text-3xl font-black tracking-tight sm:text-5xl">Jangan Biar Masalah Makin Teruk</h2>
+                <p className="mt-5 text-lg leading-8 text-white/85">
+                  Retak kecil dan lantai yang rosak akan jadi lebih mahal untuk dibaiki jika dibiarkan. WhatsApp gambar sekarang dan tempah site
+                  inspection percuma.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3">
+                <WhatsAppButton variant="dark">Tempah Inspection Percuma</WhatsAppButton>
+                <p className="text-center text-sm font-bold text-white/85">{phoneDisplay}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-neutral-950 pb-28 pt-14 text-white sm:pb-16">
+        <div className="section-shell grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <div className="flex items-center gap-3">
+              <Image src="/logo.webp" width={56} height={56} alt="" />
+              <p className="text-2xl font-black">Abang Reno</p>
+            </div>
+            <p className="mt-4 max-w-sm text-white/70">Pakar lantai epoxy dan baik pulih dinding retak & bocor di Klang Valley.</p>
+          </div>
+          <div>
+            <h2 className="text-lg font-black">Hubungi</h2>
+            <ul className="mt-4 grid gap-2 text-white/70">
+              <li>
+                WhatsApp:{" "}
+                <a href={whatsappLink()} className="font-bold text-white hover:text-orange-400">
+                  {phoneDisplay}
+                </a>
+              </li>
+              <li>Kawasan: Klang Valley</li>
+              <li>Website: abangreno.my</li>
+            </ul>
+          </div>
+          <div>
+            <h2 className="text-lg font-black">Syarikat</h2>
+            <ul className="mt-4 grid gap-2 text-white/70">
+              <li>{BUSINESS.company}</li>
+              <li>No. Pendaftaran: {BUSINESS.ssm}</li>
+            </ul>
+          </div>
         </div>
+        <p className="section-shell mt-12 border-t border-white/10 pt-6 text-sm text-white/50">
+          © {new Date().getFullYear()} {BUSINESS.company}. Hak cipta terpelihara.
+        </p>
       </footer>
 
-      <a href={whatsappLink} aria-label="WhatsApp Abang Reno for quotation" className="fixed bottom-5 right-5 z-50 inline-flex h-14 min-w-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 text-base font-black text-white shadow-2xl shadow-green-700/30 transition hover:scale-105">
-        <svg aria-hidden="true" viewBox="0 0 32 32" className="h-6 w-6" fill="currentColor">
-          <path d="M16.02 3.2C9.28 3.2 3.8 8.55 3.8 15.12c0 2.23.64 4.4 1.86 6.28L3.4 28.8l7.65-2.16a12.63 12.63 0 0 0 4.97.99c6.74 0 12.22-5.35 12.22-11.93S22.76 3.2 16.02 3.2Zm0 22.28c-1.58 0-3.12-.4-4.5-1.14l-.32-.17-4.53 1.28 1.33-4.33-.2-.34a10.15 10.15 0 0 1-1.58-5.37c0-5.38 4.4-9.76 9.8-9.76s9.8 4.38 9.8 9.76-4.4 10.07-9.8 10.07Zm5.39-7.32c-.3-.15-1.76-.86-2.03-.96-.27-.1-.47-.15-.66.15-.2.29-.76.95-.93 1.14-.17.2-.34.22-.64.08-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.48-1.75-1.65-2.04-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.51.15-.17.2-.3.3-.49.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.91-2.18-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.36-.27.3-1.04 1-1.04 2.45s1.07 2.85 1.21 3.05c.15.2 2.1 3.15 5.1 4.41.71.31 1.27.5 1.7.64.71.22 1.36.19 1.88.12.57-.08 1.76-.7 2.01-1.38.25-.68.25-1.27.17-1.39-.07-.12-.27-.19-.56-.34Z" />
-        </svg>
-        <span className="hidden sm:inline">WhatsApp Abang Reno</span>
+      <a
+        href={whatsappLink()}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp Abang Reno"
+        className="fixed bottom-5 right-5 z-50 inline-flex h-14 min-w-14 items-center justify-center gap-2 rounded-full bg-[#1fa855] px-4 text-base font-black text-white shadow-2xl shadow-green-700/30 transition hover:scale-105"
+      >
+        <WhatsAppIcon className="h-7 w-7" />
+        <span className="hidden sm:inline">WhatsApp Kami</span>
       </a>
-    </main>
+    </>
   );
 }

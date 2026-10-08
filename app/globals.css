@@ -14,7 +14,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 92px;
+  scroll-padding-top: 88px;
 }
 
 body {
@@ -24,9 +24,12 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Kept in the base layer so Tailwind utilities like text-white can override it. */
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 .section-shell {
@@ -51,34 +54,8 @@ a {
   background-size: auto, auto, 44px 44px, 44px 44px;
 }
 
-.payment-logo {
-  min-height: 56px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(8px);
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-}
-
-/* Added styles for redesigned landing page */
-.service-card img,
-.service-card .next-image {
-  display: block;
-  object-fit: cover;
-}
-
-.before-after-grid img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-@media (min-width: 1024px) {
-  .service-card .p-6 {
-    min-height: 170px;
   }
 }
