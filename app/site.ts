@@ -11,8 +11,6 @@ export const BUSINESS = {
     "Abang Reno menyediakan servis lantai epoxy dan baiki dinding retak & bocor di seluruh Klang Valley. Site inspection percuma dan quotation bertulis sebelum kerja bermula.",
 };
 
-export const phoneDisplay = "011-5131 7030";
-
 // Set to false once the before/after gallery uses real project photos.
 export const galleryIsPlaceholder = true;
 
