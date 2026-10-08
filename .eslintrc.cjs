@@ -1,4 +1,4 @@
 module.exports = {
   extends: ["next/core-web-vitals", "next/typescript"],
-  ignorePatterns: [".next/**", "node_modules/**", "out/**"],
+  ignorePatterns: [".next/**", "node_modules/**", "out/**", "next-env.d.ts"],
 };
