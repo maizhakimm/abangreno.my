@@ -14,6 +14,8 @@ export const BUSINESS = {
 // Set to false once the before/after gallery uses real project photos.
 export const galleryIsPlaceholder = true;
 
+export const heroGuarantees = ["Site inspection percuma", "Jaminan perkhidmatan 6 bulan", "Team profesional"];
+
 export const SERVICE_AREAS = [
   "Kuala Lumpur",
   "Petaling Jaya",
@@ -64,8 +66,8 @@ export const faqs = [
     a: "Boleh. Kami periksa punca kebocoran dahulu, kemudian baiki retakan dan pasang lapisan kalis air sebelum dicat semula supaya masalah tidak berulang.",
   },
   {
-    q: "Adakah kerja disertakan garansi?",
-    a: "Ya. Tempoh garansi bergantung pada jenis kerja dan sistem yang digunakan, dan akan dinyatakan dengan jelas dalam quotation anda.",
+    q: "Adakah kerja disertakan jaminan?",
+    a: "Ya. Setiap kerja disertakan jaminan perkhidmatan selama 6 bulan. Butiran jaminan dinyatakan dalam quotation anda.",
   },
   {
     q: "Bagaimana cara bayaran?",

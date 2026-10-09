@@ -4,6 +4,7 @@ import {
   SERVICE_AREAS,
   faqs,
   galleryIsPlaceholder,
+  heroGuarantees,
   whatsappLink,
 } from "./site";
 import { HeroContent } from "./hero-content";
@@ -217,13 +218,16 @@ export default function Home() {
           {/* Keeps desktop text readable over the photo. */}
           <div className="absolute inset-0 -z-10 hidden bg-gradient-to-r from-neutral-950/90 via-neutral-950/55 via-50% to-transparent lg:block" />
 
-          {/* Desktop-only glass card over the photo */}
-          <div className="hero-rise absolute bottom-28 right-8 hidden rounded-2xl bg-white/10 p-5 text-sm font-bold text-white ring-1 ring-white/25 backdrop-blur-md [animation-delay:700ms] xl:block">
-            <p className="text-xs font-black uppercase tracking-[0.15em] text-orange-300">Jaminan Kami</p>
-            <ul className="mt-3 grid gap-2">
-              <li>✓ Site inspection percuma</li>
-              <li>✓ Harga bertulis, tiada kejutan</li>
-              <li>✓ Syarikat berdaftar SSM</li>
+          {/* Wide screens: guarantees float over the photo. Smaller screens show them under the CTA. */}
+          <div className="hero-rise absolute bottom-24 right-8 hidden rounded-2xl bg-neutral-950/40 p-6 text-white ring-1 ring-white/20 backdrop-blur-md [animation-delay:500ms] xl:block">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-300">Jaminan Kami</p>
+            <ul className="mt-4 grid gap-3 text-sm font-bold">
+              {heroGuarantees.map((item) => (
+                <li key={item} className="flex items-center gap-2.5">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-[11px]">✓</span>
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
 
