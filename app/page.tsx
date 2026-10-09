@@ -22,11 +22,19 @@ const navLinks = [
   { label: "Soalan Lazim", href: "#faq" },
 ];
 
+// Simple line icons (24x24, stroke) for the trust strip.
+const trustIcons = {
+  inspect: "M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z",
+  shield: "M12 3l7.5 3v5.25c0 4.6-3.2 8.4-7.5 9.75-4.3-1.35-7.5-5.15-7.5-9.75V6L12 3Zm-3 9l2 2 4-4",
+  team: "M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19M10 10.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM20 19v-1.5a3.5 3.5 0 0 0-2.5-3.35M15.5 4.6a3 3 0 0 1 0 5.8",
+  pin: "M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21Zm0-9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z",
+};
+
 const trustPoints = [
-  { title: "Site Inspection PERCUMA", text: "Kami datang periksa dulu, tiada caj." },
-  { title: "Quotation Bertulis", text: "Harga jelas sebelum kerja bermula." },
-  { title: "Syarikat Berdaftar SSM", text: `${BUSINESS.company} (${BUSINESS.ssm})` },
-  { title: "Seluruh Klang Valley", text: "KL, Selangor & Putrajaya." },
+  { icon: trustIcons.inspect, title: "Site Inspection PERCUMA", text: "Tiada sebarang bayaran." },
+  { icon: trustIcons.shield, title: "Jaminan Perkhidmatan", text: "6 Bulan" },
+  { icon: trustIcons.team, title: "Profesional Team", text: "Pengalaman lebih 10 tahun" },
+  { icon: trustIcons.pin, title: "Seluruh Klang Valley", text: "KL, Selangor & Putrajaya." },
 ];
 
 const services = [
@@ -239,14 +247,21 @@ export default function Home() {
         </section>
 
         {/* Trust strip */}
-        <section aria-label="Kenapa boleh percaya" className="border-y border-black/5 bg-white">
-          <div className="section-shell grid grid-cols-2 gap-x-4 gap-y-6 py-8 lg:grid-cols-4">
+        <section aria-label="Kenapa boleh percaya" className="bg-[#fffaf5]">
+          <div className="section-shell grid grid-cols-2 gap-3 py-8 sm:gap-4 lg:grid-cols-4 lg:py-10">
             {trustPoints.map((point) => (
-              <div key={point.title} className="flex gap-3">
-                <CheckIcon />
+              <div
+                key={point.title}
+                className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.08)] ring-1 ring-black/5 sm:flex-row sm:items-center sm:p-5"
+              >
+                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-orange-50 text-orange-600 ring-1 ring-orange-100">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={point.icon} />
+                  </svg>
+                </span>
                 <div>
-                  <p className="font-black text-neutral-950">{point.title}</p>
-                  <p className="mt-1 text-sm text-neutral-600">{point.text}</p>
+                  <p className="text-sm font-black leading-snug text-neutral-950 sm:text-base">{point.title}</p>
+                  <p className="mt-0.5 text-xs text-neutral-600 sm:text-sm">{point.text}</p>
                 </div>
               </div>
             ))}

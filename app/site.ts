@@ -14,7 +14,7 @@ export const BUSINESS = {
 // Set to false once the before/after gallery uses real project photos.
 export const galleryIsPlaceholder = true;
 
-export const heroGuarantees = ["Site inspection percuma", "Jaminan perkhidmatan 6 bulan", "Team profesional"];
+export const heroGuarantees = ["Site inspection percuma", "Jaminan perkhidmatan 6 bulan", "Profesional Team"];
 
 export const SERVICE_AREAS = [
   "Kuala Lumpur",
