@@ -10,6 +10,7 @@ import {
 import { HeroContent } from "./hero-content";
 import { services } from "./services-data";
 import { ServicesTabs } from "./services-tabs";
+import { ProcessSteps } from "./process-steps";
 import { WhatsAppIcon } from "./whatsapp-icon";
 
 const heroImageAlt = "Pasukan Abang Reno beruniform bersama van servis";
@@ -37,13 +38,6 @@ const trustPoints = [
   { icon: trustIcons.shield, title: "Jaminan Perkhidmatan", text: "6 Bulan" },
   { icon: trustIcons.team, title: "Profesional Team", text: "Pengalaman lebih 10 tahun" },
   { icon: trustIcons.pin, title: "Seluruh Klang Valley", text: "KL, Selangor & Putrajaya." },
-];
-
-const steps = [
-  { title: "WhatsApp Gambar", text: "Hantar gambar masalah dan lokasi rumah anda. Kami beri pandangan awal." },
-  { title: "Site Inspection Percuma", text: "Kami datang ke rumah untuk ukur, periksa punca dan cadangkan kaedah terbaik." },
-  { title: "Quotation Bertulis", text: "Anda terima quotation dengan skop kerja dan harga yang jelas. Tiada caj tersembunyi." },
-  { title: "Kerja Siap & Kemas", text: "Kerja dijalankan mengikut jadual. Tapak dibersihkan sebelum kami serahkan." },
 ];
 
 const gallery = [
@@ -235,21 +229,11 @@ export default function Home() {
         </section>
 
         {/* Process */}
-        <section id="proses" className="bg-neutral-950 py-16 sm:py-24">
-          <div className="section-shell">
-            <SectionHeader tone="dark" eyebrow="Cara Kami Bekerja" title="4 Langkah Mudah" subtitle="Proses yang telus dari mula hingga siap." />
-            <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {steps.map((step, index) => (
-                <li key={step.title} className="rounded-[1.5rem] bg-white/5 p-6 ring-1 ring-white/10">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-600 text-lg font-black text-white">{index + 1}</span>
-                  <h3 className="mt-5 text-lg font-black text-white">{step.title}</h3>
-                  <p className="mt-2 leading-7 text-white/70">{step.text}</p>
-                </li>
-              ))}
-            </ol>
-            <div className="mt-10 text-center">
-              <WhatsAppButton>Mula Dengan Langkah 1</WhatsAppButton>
-            </div>
+        <section id="proses" className="relative overflow-hidden bg-neutral-950 py-16 sm:py-24">
+          <div aria-hidden="true" className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[40rem] -translate-x-1/2 rounded-full bg-orange-600/20 blur-3xl" />
+          <div className="section-shell relative">
+            <SectionHeader tone="dark" eyebrow="Cara Kami Bekerja" title="Semudah 4 Langkah" subtitle="Dari WhatsApp pertama sampai kerja siap. Telus di setiap langkah." />
+            <ProcessSteps />
           </div>
         </section>
 
