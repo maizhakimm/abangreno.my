@@ -8,6 +8,8 @@ import {
   whatsappLink,
 } from "./site";
 import { HeroContent } from "./hero-content";
+import { services } from "./services-data";
+import { ServicesTabs } from "./services-tabs";
 import { WhatsAppIcon } from "./whatsapp-icon";
 
 const heroImageAlt = "Pasukan Abang Reno beruniform bersama van servis";
@@ -22,41 +24,19 @@ const navLinks = [
   { label: "Soalan Lazim", href: "#faq" },
 ];
 
-const trustPoints = [
-  { title: "Site Inspection PERCUMA", text: "Kami datang periksa dulu, tiada caj." },
-  { title: "Quotation Bertulis", text: "Harga jelas sebelum kerja bermula." },
-  { title: "Syarikat Berdaftar SSM", text: `${BUSINESS.company} (${BUSINESS.ssm})` },
-  { title: "Seluruh Klang Valley", text: "KL, Selangor & Putrajaya." },
-];
+// Simple line icons (24x24, stroke) for the trust strip.
+const trustIcons = {
+  inspect: "M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z",
+  shield: "M12 3l7.5 3v5.25c0 4.6-3.2 8.4-7.5 9.75-4.3-1.35-7.5-5.15-7.5-9.75V6L12 3Zm-3 9l2 2 4-4",
+  team: "M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19M10 10.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM20 19v-1.5a3.5 3.5 0 0 0-2.5-3.35M15.5 4.6a3 3 0 0 1 0 5.8",
+  pin: "M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21Zm0-9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z",
+};
 
-const services = [
-  {
-    id: "epoxy",
-    title: "Lantai Epoxy",
-    image: "/epoxy.webp",
-    imageAlt: "Pekerja Abang Reno menyapu salutan epoxy pada lantai bilik air",
-    intro:
-      "Lantai licin berkilat yang kalis air, tahan kotoran dan mudah dibersihkan. Sesuai untuk rumah, kedai dan ruang kerja.",
-    suitable: ["Garaj & porch kereta", "Bilik air & dapur", "Stor, bengkel & kedai", "Lantai simen yang berdebu atau retak halus"],
-    message: "Lantai Epoxy",
-    cta: "Tanya Harga Epoxy",
-  },
-  {
-    id: "dinding",
-    title: "Baiki Dinding Retak & Bocor",
-    image: "/wall-crack.webp",
-    imageAlt: "Pekerja Abang Reno membaiki retakan pada dinding rumah",
-    intro:
-      "Kami cari punca air masuk, baiki retakan dan pasang lapisan kalis air supaya masalah tidak berulang selepas dicat semula.",
-    suitable: [
-      "Dinding retak rambut atau retak besar",
-      "Air meresap masuk bila hujan",
-      "Dinding lembap, cat menggelembung & berkulat",
-      "Kalis air dinding luar & parapet",
-    ],
-    message: "Baiki Dinding Retak / Bocor",
-    cta: "Tanya Harga Baiki Dinding",
-  },
+const trustPoints = [
+  { icon: trustIcons.inspect, title: "Site Inspection PERCUMA", text: "Tiada sebarang bayaran." },
+  { icon: trustIcons.shield, title: "Jaminan Perkhidmatan", text: "6 Bulan" },
+  { icon: trustIcons.team, title: "Profesional Team", text: "Pengalaman lebih 10 tahun" },
+  { icon: trustIcons.pin, title: "Seluruh Klang Valley", text: "KL, Selangor & Putrajaya." },
 ];
 
 const steps = [
@@ -90,18 +70,6 @@ const reasons = [
     text: "Perabot dilindungi semasa kerja dan tapak dibersihkan selepas siap.",
   },
 ];
-
-function CheckIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" className="mt-0.5 h-5 w-5 flex-none text-orange-600" fill="currentColor">
-      <path
-        fillRule="evenodd"
-        d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.86-9.86a.75.75 0 0 0-1.22-.88l-3.24 4.5-1.6-1.6a.75.75 0 1 0-1.06 1.06l2.22 2.22a.75.75 0 0 0 1.14-.09l3.76-5.21Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
 
 function WhatsAppButton({
   children,
@@ -239,14 +207,21 @@ export default function Home() {
         </section>
 
         {/* Trust strip */}
-        <section aria-label="Kenapa boleh percaya" className="border-y border-black/5 bg-white">
-          <div className="section-shell grid grid-cols-2 gap-x-4 gap-y-6 py-8 lg:grid-cols-4">
+        <section aria-label="Kenapa boleh percaya" className="bg-[#fffaf5]">
+          <div className="section-shell grid grid-cols-2 gap-3 py-8 sm:gap-4 lg:grid-cols-4 lg:py-10">
             {trustPoints.map((point) => (
-              <div key={point.title} className="flex gap-3">
-                <CheckIcon />
+              <div
+                key={point.title}
+                className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.08)] ring-1 ring-black/5 sm:flex-row sm:items-center sm:p-5"
+              >
+                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-orange-50 text-orange-600 ring-1 ring-orange-100">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={point.icon} />
+                  </svg>
+                </span>
                 <div>
-                  <p className="font-black text-neutral-950">{point.title}</p>
-                  <p className="mt-1 text-sm text-neutral-600">{point.text}</p>
+                  <p className="text-sm font-black leading-snug text-neutral-950 sm:text-base">{point.title}</p>
+                  <p className="mt-0.5 text-xs text-neutral-600 sm:text-sm">{point.text}</p>
                 </div>
               </div>
             ))}
@@ -255,34 +230,8 @@ export default function Home() {
 
         {/* Services */}
         <section id="servis" className="section-shell py-16 sm:py-24">
-          <SectionHeader eyebrow="Servis Kami" title="Dua Servis, Fokus Sepenuhnya" subtitle="Kami pilih untuk pakar dalam dua jenis kerja supaya setiap projek disiapkan dengan betul." />
-          <div className="grid gap-8 lg:grid-cols-2">
-            {services.map((service) => (
-              <article key={service.id} id={service.id} className="flex flex-col overflow-hidden rounded-[2rem] bg-white card-shadow">
-                <div className="relative aspect-[16/9] w-full">
-                  <Image src={service.image} alt={service.imageAlt} fill sizes="(min-width: 1024px) 544px, 100vw" className="object-cover" />
-                </div>
-                <div className="flex flex-1 flex-col p-6 sm:p-8">
-                  <h3 className="text-2xl font-black text-neutral-950">{service.title}</h3>
-                  <p className="mt-3 leading-7 text-neutral-600">{service.intro}</p>
-                  <p className="mt-6 text-sm font-black uppercase tracking-[0.15em] text-neutral-500">Sesuai untuk</p>
-                  <ul className="mt-3 grid gap-2">
-                    {service.suitable.map((item) => (
-                      <li key={item} className="flex gap-2 text-neutral-800">
-                        <CheckIcon />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-8 flex flex-1 items-end">
-                    <WhatsAppButton service={service.message} className="w-full sm:w-auto">
-                      {service.cta}
-                    </WhatsAppButton>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <SectionHeader eyebrow="Apa Kami Buat" title="Servis Kami" />
+          <ServicesTabs />
         </section>
 
         {/* Process */}
