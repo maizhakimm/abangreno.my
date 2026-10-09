@@ -1,12 +1,18 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import {
   BUSINESS,
   SERVICE_AREAS,
   faqs,
   galleryIsPlaceholder,
-  phoneDisplay,
+  heroGuarantees,
   whatsappLink,
 } from "./site";
+import { HeroContent } from "./hero-content";
+import { WhatsAppIcon } from "./whatsapp-icon";
+
+const heroImageAlt = "Pasukan Abang Reno beruniform bersama van servis";
+const { props: heroDesktop } = getImageProps({ src: "/hero-team-desktop.webp", alt: heroImageAlt, width: 1672, height: 941, quality: 80, priority: true });
+const { props: heroMobile } = getImageProps({ src: "/hero-team-mobile.webp", alt: heroImageAlt, width: 941, height: 1672, quality: 80, priority: true, sizes: "100vw" });
 
 const navLinks = [
   { label: "Servis", href: "#servis" },
@@ -85,14 +91,6 @@ const reasons = [
   },
 ];
 
-function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 32 32" className={className} fill="currentColor">
-      <path d="M16.02 3.2C9.28 3.2 3.8 8.55 3.8 15.12c0 2.23.64 4.4 1.86 6.28L3.4 28.8l7.65-2.16a12.63 12.63 0 0 0 4.97.99c6.74 0 12.22-5.35 12.22-11.93S22.76 3.2 16.02 3.2Zm0 22.28c-1.58 0-3.12-.4-4.5-1.14l-.32-.17-4.53 1.28 1.33-4.33-.2-.34a10.15 10.15 0 0 1-1.58-5.37c0-5.38 4.4-9.76 9.8-9.76s9.8 4.38 9.8 9.76-4.4 10.07-9.8 10.07Zm5.39-7.32c-.3-.15-1.76-.86-2.03-.96-.27-.1-.47-.15-.66.15-.2.29-.76.95-.93 1.14-.17.2-.34.22-.64.08-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.48-1.75-1.65-2.04-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.51.15-.17.2-.3.3-.49.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.91-2.18-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.36-.27.3-1.04 1-1.04 2.45s1.07 2.85 1.21 3.05c.15.2 2.1 3.15 5.1 4.41.71.31 1.27.5 1.7.64.71.22 1.36.19 1.88.12.57-.08 1.76-.7 2.01-1.38.25-.68.25-1.27.17-1.39-.07-.12-.27-.19-.56-.34Z" />
-    </svg>
-  );
-}
-
 function CheckIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 20 20" className="mt-0.5 h-5 w-5 flex-none text-orange-600" fill="currentColor">
@@ -153,7 +151,6 @@ const jsonLd = {
   url: BUSINESS.url,
   logo: `${BUSINESS.url}/logo.webp`,
   image: `${BUSINESS.url}/og-image.jpg`,
-  telephone: BUSINESS.phoneE164,
   description: BUSINESS.description,
   areaServed: SERVICE_AREAS.map((name) => ({ "@type": "City", name })),
   address: { "@type": "PostalAddress", addressRegion: "Selangor", addressCountry: "MY" },
@@ -176,79 +173,69 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
-      <header className="sticky top-0 z-50 border-b border-black/5 bg-white/90 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-neutral-950/85 text-white backdrop-blur-xl">
         <div className="section-shell flex min-h-16 items-center justify-between gap-4 py-2 sm:min-h-20">
           <a href="#utama" className="flex items-center gap-3" aria-label="Abang Reno, ke atas">
             <Image src="/logo.webp" width={52} height={52} alt="" priority className="h-11 w-11 sm:h-13 sm:w-13" />
             <div className="leading-tight">
-              <p className="text-lg font-black text-neutral-950">Abang Reno</p>
-              <p className="hidden text-xs font-bold text-neutral-500 sm:block">Epoxy · Dinding Retak & Bocor</p>
+              <p className="text-lg font-black">Abang Reno</p>
+              <p className="hidden text-xs font-bold text-white/60 sm:block">Epoxy · Dinding Retak & Bocor</p>
             </div>
           </a>
 
           <nav className="hidden items-center gap-7 lg:flex" aria-label="Navigasi utama">
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="text-sm font-bold text-neutral-700 transition hover:text-orange-600">
+              <a key={link.href} href={link.href} className="text-sm font-bold text-white/80 transition hover:text-orange-400">
                 {link.label}
               </a>
             ))}
           </nav>
 
-          <WhatsAppButton variant="whatsapp" className="min-h-11 px-4 text-sm sm:px-5">
+          <WhatsAppButton variant="whatsapp" className="min-h-11 whitespace-nowrap px-4 text-sm sm:px-5">
             <span className="sm:hidden">WhatsApp</span>
-            <span className="hidden sm:inline">{phoneDisplay}</span>
+            <span className="hidden sm:inline">WhatsApp Kami</span>
           </WhatsAppButton>
         </div>
       </header>
 
       <main id="utama" className="overflow-hidden">
         {/* Hero */}
-        <section className="hero-grid-bg relative pb-14 pt-8 sm:pb-20 lg:pt-14">
-          <div className="section-shell grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
-            <div>
-              <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-orange-600 px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-white shadow-md shadow-orange-600/25 sm:text-sm">
-                ✓ Site Inspection PERCUMA · Klang Valley
-              </p>
-              <h1 className="text-4xl font-black leading-[1.05] tracking-[-0.04em] text-neutral-950 sm:text-6xl">
-                Lantai Epoxy & Baiki <span className="text-orange-600">Dinding Retak / Bocor</span>
-              </h1>
-              <p className="mt-6 max-w-xl text-lg leading-8 text-neutral-600">
-                Lantai kusam, dinding retak atau air meresap bila hujan? Kami datang periksa secara percuma, terangkan puncanya dan beri
-                quotation bertulis sebelum sebarang kerja dimulakan.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <WhatsAppButton>Tempah Inspection Percuma</WhatsAppButton>
-                <a
-                  href="#projek"
-                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-6 text-sm font-extrabold text-neutral-950 ring-1 ring-neutral-200 transition hover:bg-orange-50 sm:text-base"
-                >
-                  Lihat Hasil Kerja
-                </a>
-              </div>
-              <p className="mt-4 text-sm text-neutral-500">
-                Atau hubungi terus: <a href={whatsappLink()} className="font-bold text-neutral-800 underline decoration-orange-400 underline-offset-4">{phoneDisplay}</a>
-              </p>
-            </div>
+        <section className="relative isolate flex flex-col overflow-hidden bg-neutral-950 text-white lg:min-h-[680px] lg:justify-center">
+          <HeroContent />
 
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-[3rem] bg-orange-500/15 blur-3xl" />
-              <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-[0_40px_80px_rgba(255,138,51,0.18)]">
-                <Image
-                  src="/water-proofing.webp"
-                  width={1600}
-                  height={900}
-                  alt="Pekerja Abang Reno menyapu lapisan kalis air"
-                  priority
-                  sizes="(min-width: 1024px) 520px, 100vw"
-                  className="aspect-[4/3] w-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-5 left-4 right-4 flex items-center gap-3 rounded-2xl bg-white p-4 shadow-xl ring-1 ring-black/5 sm:left-auto sm:right-6 sm:max-w-xs">
-                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-orange-100 text-xl">🏠</span>
-                <p className="text-sm font-bold leading-snug text-neutral-800">Kami datang ke rumah anda untuk periksa, tanpa sebarang caj.</p>
-              </div>
-            </div>
+          {/* Mobile/tablet: photo sits below the text. Desktop: full-bleed background. */}
+          <div className="relative -z-20 -mt-20 overflow-hidden sm:-mt-28 lg:absolute lg:inset-0 lg:mt-0">
+            <picture>
+              <source media="(min-width: 1024px)" srcSet={heroDesktop.srcSet} sizes="100vw" />
+              <img
+                {...heroMobile}
+                alt={heroImageAlt}
+                className="hero-kenburns aspect-[941/1000] w-full object-cover object-bottom sm:aspect-[941/820] lg:aspect-auto lg:h-full lg:object-[70%_center]"
+              />
+            </picture>
+            <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-neutral-950/30 via-30% to-transparent to-50% lg:hidden" />
           </div>
+          {/* Keeps desktop text readable over the photo. */}
+          <div className="absolute inset-0 -z-10 hidden bg-gradient-to-r from-neutral-950/90 via-neutral-950/55 via-50% to-transparent lg:block" />
+
+          {/* Wide screens: guarantees float over the photo. Smaller screens show them under the CTA. */}
+          <div className="hero-rise absolute bottom-24 right-8 hidden rounded-2xl bg-neutral-950/40 p-6 text-white ring-1 ring-white/20 backdrop-blur-md [animation-delay:500ms] xl:block">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-300">Jaminan Kami</p>
+            <ul className="mt-4 grid gap-3 text-sm font-bold">
+              {heroGuarantees.map((item) => (
+                <li key={item} className="flex items-center gap-2.5">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-[11px]">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <a href="#servis" aria-label="Skrol ke bawah" className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 text-white/70 transition hover:text-white lg:block">
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="h-8 w-8 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
         </section>
 
         {/* Trust strip */}
@@ -389,7 +376,6 @@ export default function Home() {
               </div>
               <div className="flex flex-col gap-3">
                 <WhatsAppButton variant="dark">Tempah Inspection Percuma</WhatsAppButton>
-                <p className="text-center text-sm font-bold text-white/85">{phoneDisplay}</p>
               </div>
             </div>
           </div>
@@ -409,9 +395,8 @@ export default function Home() {
             <h2 className="text-lg font-black">Hubungi</h2>
             <ul className="mt-4 grid gap-2 text-white/70">
               <li>
-                WhatsApp:{" "}
-                <a href={whatsappLink()} className="font-bold text-white hover:text-orange-400">
-                  {phoneDisplay}
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:text-orange-400">
+                  WhatsApp Kami →
                 </a>
               </li>
               <li>Kawasan: Klang Valley</li>

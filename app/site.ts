@@ -11,10 +11,10 @@ export const BUSINESS = {
     "Abang Reno menyediakan servis lantai epoxy dan baiki dinding retak & bocor di seluruh Klang Valley. Site inspection percuma dan quotation bertulis sebelum kerja bermula.",
 };
 
-export const phoneDisplay = "011-5131 7030";
-
 // Set to false once the before/after gallery uses real project photos.
 export const galleryIsPlaceholder = true;
+
+export const heroGuarantees = ["Site inspection percuma", "Jaminan perkhidmatan 6 bulan", "Team profesional"];
 
 export const SERVICE_AREAS = [
   "Kuala Lumpur",
@@ -66,8 +66,8 @@ export const faqs = [
     a: "Boleh. Kami periksa punca kebocoran dahulu, kemudian baiki retakan dan pasang lapisan kalis air sebelum dicat semula supaya masalah tidak berulang.",
   },
   {
-    q: "Adakah kerja disertakan garansi?",
-    a: "Ya. Tempoh garansi bergantung pada jenis kerja dan sistem yang digunakan, dan akan dinyatakan dengan jelas dalam quotation anda.",
+    q: "Adakah kerja disertakan jaminan?",
+    a: "Ya. Setiap kerja disertakan jaminan perkhidmatan selama 6 bulan. Butiran jaminan dinyatakan dalam quotation anda.",
   },
   {
     q: "Bagaimana cara bayaran?",

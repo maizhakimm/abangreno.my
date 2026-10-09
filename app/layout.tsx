@@ -7,7 +7,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
 const title = "Abang Reno | Lantai Epoxy & Baiki Dinding Retak / Bocor di Klang Valley";
 const shareTitle = "Abang Reno | Lantai Epoxy & Baiki Dinding Retak / Bocor";
-const shareDescription = "Site inspection PERCUMA di seluruh Klang Valley. Quotation bertulis sebelum kerja bermula. WhatsApp 011-5131 7030.";
+const shareDescription = "Site inspection PERCUMA di seluruh Klang Valley. Quotation bertulis sebelum kerja bermula. WhatsApp kami untuk tempahan.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BUSINESS.url),

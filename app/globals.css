@@ -59,3 +59,56 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* Hero animations */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-word {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-word {
+  animation: hero-word 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-kenburns {
+  animation: hero-kenburns 22s ease-in-out infinite alternate;
+  transform-origin: 70% 80%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise,
+  .hero-word,
+  .hero-kenburns {
+    animation: none;
+  }
+}
