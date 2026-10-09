@@ -8,6 +8,8 @@ import {
   whatsappLink,
 } from "./site";
 import { HeroContent } from "./hero-content";
+import { services } from "./services-data";
+import { ServicesTabs } from "./services-tabs";
 import { WhatsAppIcon } from "./whatsapp-icon";
 
 const heroImageAlt = "Pasukan Abang Reno beruniform bersama van servis";
@@ -35,36 +37,6 @@ const trustPoints = [
   { icon: trustIcons.shield, title: "Jaminan Perkhidmatan", text: "6 Bulan" },
   { icon: trustIcons.team, title: "Profesional Team", text: "Pengalaman lebih 10 tahun" },
   { icon: trustIcons.pin, title: "Seluruh Klang Valley", text: "KL, Selangor & Putrajaya." },
-];
-
-const services = [
-  {
-    id: "epoxy",
-    title: "Lantai Epoxy",
-    image: "/epoxy.webp",
-    imageAlt: "Pekerja Abang Reno menyapu salutan epoxy pada lantai bilik air",
-    intro:
-      "Lantai licin berkilat yang kalis air, tahan kotoran dan mudah dibersihkan. Sesuai untuk rumah, kedai dan ruang kerja.",
-    suitable: ["Garaj & porch kereta", "Bilik air & dapur", "Stor, bengkel & kedai", "Lantai simen yang berdebu atau retak halus"],
-    message: "Lantai Epoxy",
-    cta: "Tanya Harga Epoxy",
-  },
-  {
-    id: "dinding",
-    title: "Baiki Dinding Retak & Bocor",
-    image: "/wall-crack.webp",
-    imageAlt: "Pekerja Abang Reno membaiki retakan pada dinding rumah",
-    intro:
-      "Kami cari punca air masuk, baiki retakan dan pasang lapisan kalis air supaya masalah tidak berulang selepas dicat semula.",
-    suitable: [
-      "Dinding retak rambut atau retak besar",
-      "Air meresap masuk bila hujan",
-      "Dinding lembap, cat menggelembung & berkulat",
-      "Kalis air dinding luar & parapet",
-    ],
-    message: "Baiki Dinding Retak / Bocor",
-    cta: "Tanya Harga Baiki Dinding",
-  },
 ];
 
 const steps = [
@@ -98,18 +70,6 @@ const reasons = [
     text: "Perabot dilindungi semasa kerja dan tapak dibersihkan selepas siap.",
   },
 ];
-
-function CheckIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" className="mt-0.5 h-5 w-5 flex-none text-orange-600" fill="currentColor">
-      <path
-        fillRule="evenodd"
-        d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.86-9.86a.75.75 0 0 0-1.22-.88l-3.24 4.5-1.6-1.6a.75.75 0 1 0-1.06 1.06l2.22 2.22a.75.75 0 0 0 1.14-.09l3.76-5.21Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
 
 function WhatsAppButton({
   children,
@@ -270,34 +230,8 @@ export default function Home() {
 
         {/* Services */}
         <section id="servis" className="section-shell py-16 sm:py-24">
-          <SectionHeader eyebrow="Servis Kami" title="Dua Servis, Fokus Sepenuhnya" subtitle="Kami pilih untuk pakar dalam dua jenis kerja supaya setiap projek disiapkan dengan betul." />
-          <div className="grid gap-8 lg:grid-cols-2">
-            {services.map((service) => (
-              <article key={service.id} id={service.id} className="flex flex-col overflow-hidden rounded-[2rem] bg-white card-shadow">
-                <div className="relative aspect-[16/9] w-full">
-                  <Image src={service.image} alt={service.imageAlt} fill sizes="(min-width: 1024px) 544px, 100vw" className="object-cover" />
-                </div>
-                <div className="flex flex-1 flex-col p-6 sm:p-8">
-                  <h3 className="text-2xl font-black text-neutral-950">{service.title}</h3>
-                  <p className="mt-3 leading-7 text-neutral-600">{service.intro}</p>
-                  <p className="mt-6 text-sm font-black uppercase tracking-[0.15em] text-neutral-500">Sesuai untuk</p>
-                  <ul className="mt-3 grid gap-2">
-                    {service.suitable.map((item) => (
-                      <li key={item} className="flex gap-2 text-neutral-800">
-                        <CheckIcon />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-8 flex flex-1 items-end">
-                    <WhatsAppButton service={service.message} className="w-full sm:w-auto">
-                      {service.cta}
-                    </WhatsAppButton>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <SectionHeader eyebrow="Apa Kami Buat" title="Servis Kami" />
+          <ServicesTabs />
         </section>
 
         {/* Process */}
