@@ -8,7 +8,7 @@ export const services = [
     imageAlt: "Pekerja Abang Reno menyapu salutan epoxy pada lantai bilik air",
     intro: "Lantai kemas & berkilat, kalis air dan mudah dibersihkan.",
     highlights: ["⏱ Siap 1–3 hari", "🛡 Jaminan 6 bulan"],
-    suitable: ["Garaj & porch", "Bilik air", "Dapur", "Kedai / stor"],
+    suitable: ["Garaj & porch", "Bilik air", "Dapur", "Balkoni", "Kedai / stor"],
     message: "Lantai Epoxy",
     cta: "Tanya Harga Epoxy",
   },
